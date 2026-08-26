@@ -3,167 +3,180 @@
 
 <head>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Student Quiz</title>
+<title>Student Quiz</title>
 
-    <style>
+<style>
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-        body {
-            font-family: Arial, sans-serif;
-            min-height: 100vh;
+body {
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
 
-            display: flex;
-            justify-content: center;
-            align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-            background:
-                linear-gradient(135deg, #0f172a, #1e3a8a, #2563eb);
-        }
+    background:
+        linear-gradient(135deg, #0f172a, #1e3a8a, #2563eb);
+}
 
-        .card {
-            width: 90%;
-            max-width: 450px;
+.card {
+    width: 90%;
+    max-width: 450px;
 
-            background: white;
+    background: white;
 
-            padding: 45px 35px;
+    padding: 45px 35px;
 
-            border-radius: 24px;
+    border-radius: 24px;
 
-            box-shadow:
-                0 25px 60px rgba(0, 0, 0, 0.25);
+    box-shadow:
+        0 25px 60px rgba(0, 0, 0, 0.25);
 
-            text-align: center;
-        }
+    text-align: center;
+}
 
-        .icon {
-            width: 80px;
-            height: 80px;
+.icon {
+    width: 80px;
+    height: 80px;
 
-            margin: 0 auto 20px;
+    margin: 0 auto 20px;
 
-            border-radius: 20px;
+    border-radius: 20px;
 
-            background: #2563eb;
+    background: #2563eb;
 
-            display: flex;
-            justify-content: center;
-            align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-            font-size: 40px;
-        }
+    font-size: 40px;
+}
 
-        h1 {
-            color: #0f172a;
-            font-size: 32px;
-            margin-bottom: 10px;
-        }
+h1 {
+    color: #0f172a;
+    font-size: 32px;
+    margin-bottom: 10px;
+}
 
-        .subtitle {
-            color: #64748b;
-            margin-bottom: 35px;
-        }
+.subtitle {
+    color: #64748b;
+    margin-bottom: 35px;
+}
 
-        label {
-            display: block;
-            text-align: left;
-            font-weight: bold;
-            color: #334155;
-            margin-bottom: 10px;
-        }
+label {
+    display: block;
+    text-align: left;
+    font-weight: bold;
+    color: #334155;
+    margin-bottom: 10px;
+}
 
-        input {
-            width: 100%;
-            padding: 15px;
+input {
+    width: 100%;
 
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
+    padding: 15px;
 
-            font-size: 16px;
-            outline: none;
-        }
+    border: 2px solid #e2e8f0;
 
-        input:focus {
-            border-color: #2563eb;
-        }
+    border-radius: 12px;
 
-        button {
-            width: 100%;
+    font-size: 16px;
 
-            margin-top: 25px;
-            padding: 15px;
+    outline: none;
+}
 
-            border: none;
-            border-radius: 12px;
+input:focus {
+    border-color: #2563eb;
+}
 
-            background: #2563eb;
-            color: white;
+button {
+    width: 100%;
 
-            font-size: 17px;
-            font-weight: bold;
+    margin-top: 25px;
 
-            cursor: pointer;
-        }
+    padding: 15px;
 
-        button:hover {
-            background: #1d4ed8;
-        }
+    border: none;
 
-        button:disabled {
-            background: #94a3b8;
-            cursor: not-allowed;
-        }
+    border-radius: 12px;
 
-        .message {
-            margin-top: 20px;
-            font-size: 14px;
-            min-height: 20px;
-        }
+    background: #2563eb;
 
-        .success {
-            color: #16a34a;
-        }
+    color: white;
 
-        .error {
-            color: #dc2626;
-        }
+    font-size: 17px;
 
-        .student-info {
-            display: none;
+    font-weight: bold;
 
-            margin-top: 25px;
-            padding: 20px;
+    cursor: pointer;
+}
 
-            background: #f8fafc;
-            border-radius: 15px;
+button:hover {
+    background: #1d4ed8;
+}
 
-            text-align: left;
-        }
+button:disabled {
+    background: #94a3b8;
+    cursor: not-allowed;
+}
 
-        .student-info p {
-            margin-bottom: 10px;
-            color: #334155;
-        }
+.message {
+    margin-top: 20px;
 
-        .start-button {
-            display: none;
-        }
+    font-size: 14px;
 
-        .footer {
-            margin-top: 30px;
-            color: #94a3b8;
-            font-size: 13px;
-        }
+    min-height: 20px;
+}
 
-    </style>
+.success {
+    color: #16a34a;
+}
+
+.error {
+    color: #dc2626;
+}
+
+.student-info {
+    display: none;
+
+    margin-top: 25px;
+
+    padding: 20px;
+
+    background: #f8fafc;
+
+    border-radius: 15px;
+
+    text-align: left;
+}
+
+.student-info p {
+    margin-bottom: 10px;
+    color: #334155;
+}
+
+.start-button {
+    display: none;
+}
+
+.footer {
+    margin-top: 30px;
+
+    color: #94a3b8;
+
+    font-size: 13px;
+}
+
+</style>
 
 </head>
 
@@ -171,278 +184,306 @@
 <body>
 
 
-    <div class="card">
+<div class="card">
 
-        <div class="icon">
-            🎓
-        </div>
-
-        <h1>
-            Student Quiz
-        </h1>
-
-        <p class="subtitle">
-            Enter your Student ID to continue
-        </p>
+    <div class="icon">
+        🎓
+    </div>
 
 
-        <div id="loginBox">
-
-            <label for="studentID">
-                Student ID
-            </label>
-
-            <input
-                type="text"
-                id="studentID"
-                placeholder="Example: ST-0001"
-            >
-
-            <button
-                id="loginButton"
-                onclick="login()">
-                LOGIN →
-            </button>
-
-            <p
-                id="message"
-                class="message">
-            </p>
-
-        </div>
+    <h1>
+        Student Quiz
+    </h1>
 
 
-        <div
-            id="studentInfo"
-            class="student-info">
+    <p class="subtitle">
+        Enter your Student ID to continue
+    </p>
 
-            <p>
-                <strong>Name:</strong>
-                <span id="studentName"></span>
-            </p>
 
-            <p>
-                <strong>Grade:</strong>
-                <span id="studentGrade"></span>
-            </p>
+    <div id="loginBox">
 
-        </div>
+        <label for="studentID">
+            Student ID
+        </label>
+
+
+        <input
+            type="text"
+            id="studentID"
+            placeholder="Example: ST-0001"
+        >
 
 
         <button
-            id="startButton"
-            class="start-button"
-            onclick="startQuiz()">
+            id="loginButton"
+            onclick="login()">
 
-            START QUIZ →
+            LOGIN →
 
         </button>
 
 
-        <p class="footer">
-            Online Examination System
+        <p
+            id="message"
+            class="message">
         </p>
 
     </div>
 
 
-    <script>
+    <div
+        id="studentInfo"
+        class="student-info">
 
-        const API_URL =
-            "https://script.google.com/macros/s/AKfycbwmH45QxI88Mig57T04pW_rjcxWgReGEJFiRKu-NhKTggobOgicUrT-o2BquFp2AVJeyQ/exec";
+        <p>
 
+            <strong>Name:</strong>
 
-        let currentStudent = null;
+            <span id="studentName"></span>
 
-
-        async function login() {
-
-            let id =
-                document
-                .getElementById("studentID")
-                .value
-                .trim();
+        </p>
 
 
-            let message =
-                document.getElementById("message");
+        <p>
+
+            <strong>Grade:</strong>
+
+            <span id="studentGrade"></span>
+
+        </p>
+
+    </div>
 
 
-            let loginButton =
-                document.getElementById("loginButton");
+    <button
+        id="startButton"
+        class="start-button"
+        onclick="startQuiz()">
+
+        START QUIZ →
+
+    </button>
 
 
-            if (id === "") {
+    <p class="footer">
+        Online Examination System
+    </p>
 
-                message.innerHTML =
-                    "Please enter your Student ID.";
-
-                message.className =
-                    "message error";
-
-                return;
-            }
+</div>
 
 
-            loginButton.disabled = true;
+<script>
 
-            loginButton.innerHTML =
-                "CHECKING...";
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbwmH45QxI88Mig57T04pW_rjcxWgReGEJFiRKu-NhKTggobOgicUrT-o2BquFp2AVJeyQ/exec";
+
+
+let currentStudent = null;
+
+
+async function login() {
+
+    const id =
+        document
+        .getElementById("studentID")
+        .value
+        .trim();
+
+
+    const message =
+        document.getElementById("message");
+
+
+    const loginButton =
+        document.getElementById("loginButton");
+
+
+    if (id === "") {
+
+        message.innerHTML =
+            "Please enter your Student ID.";
+
+        message.className =
+            "message error";
+
+        return;
+
+    }
+
+
+    loginButton.disabled = true;
+
+    loginButton.innerHTML =
+        "CHECKING...";
+
+
+    message.innerHTML = "";
+
+
+    try {
+
+        const response =
+            await fetch(
+                API_URL +
+                "?id=" +
+                encodeURIComponent(id)
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (data.success) {
+
+            currentStudent = data;
+
+
+            document
+            .getElementById("studentName")
+            .textContent =
+                data.name;
+
+
+            document
+            .getElementById("studentGrade")
+            .textContent =
+                data.grade;
+
+
+            document
+            .getElementById("studentInfo")
+            .style.display =
+                "block";
+
+
+            document
+            .getElementById("startButton")
+            .style.display =
+                "block";
 
 
             message.innerHTML =
-                "";
+                "Student ID verified successfully!";
 
 
-            try {
-
-                let response =
-                    await fetch(
-                        API_URL +
-                        "?id=" +
-                        encodeURIComponent(id)
-                    );
-
-
-                let data =
-                    await response.json();
-
-
-                if (data.success) {
-
-                    currentStudent = data;
-
-
-                    document
-                    .getElementById("studentName")
-                    .innerHTML = data.name;
-
-
-                    document
-                    .getElementById("studentGrade")
-                    .innerHTML = data.grade;
-
-
-                    document
-                    .getElementById("studentInfo")
-                    .style.display = "block";
-
-
-                    document
-                    .getElementById("startButton")
-                    .style.display = "block";
-
-
-                    message.innerHTML =
-                        "Student ID verified successfully!";
-
-
-                    message.className =
-                        "message success";
-
-                } else {
-
-                    message.innerHTML =
-                        "Invalid Student ID. Please try again.";
-
-
-                    message.className =
-                        "message error";
-
-                }
-
-            }
-
-            catch (error) {
-
-                message.innerHTML =
-                    "Connection error. Please try again.";
-
-                message.className =
-                    "message error";
-
-            }
-
-
-            loginButton.disabled = false;
-
-            loginButton.innerHTML =
-                "LOGIN →";
+            message.className =
+                "message success";
 
         }
 
+        else {
 
-        function startQuiz() {
+            message.innerHTML =
+                "Invalid Student ID. Please try again.";
 
-            if (!currentStudent) {
-                return;
-            }
-
-
-            localStorage.setItem(
-                "studentID",
-                currentStudent.id
-            );
-
-
-            localStorage.setItem(
-                "studentName",
-                currentStudent.name
-            );
-
-
-            localStorage.setItem(
-                "studentGrade",
-                currentStudent.grade
-            );
-
-
-            if (currentStudent.grade === "Grade 5") {
-
-                window.location.href =
-                    "grade5.html";
-
-            }
-
-            else if (currentStudent.grade === "Grade 6") {
-
-                window.location.href =
-                    "grade6.html";
-
-            }
-
-            else if (currentStudent.grade === "Grade 7") {
-
-                window.location.href =
-                    "grade7.html";
-
-            }
-
-            else if (currentStudent.grade === "Grade 8") {
-
-                window.location.href =
-                    "grade8.html";
-
-            }
-
-            else if (currentStudent.grade === "Grade 9") {
-
-                window.location.href =
-                    "grade9.html";
-
-            }
-
-            else {
-
-                alert(
-                    "No quiz is available for this grade yet."
-                );
-
-            }
+            message.className =
+                "message error";
 
         }
 
-    </script>
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        message.innerHTML =
+            "Connection error. Please try again.";
+
+        message.className =
+            "message error";
+
+    }
+
+
+    loginButton.disabled = false;
+
+    loginButton.innerHTML =
+        "LOGIN →";
+
+}
+
+
+function startQuiz() {
+
+    if (!currentStudent) {
+        return;
+    }
+
+
+    localStorage.setItem(
+        "studentID",
+        currentStudent.id
+    );
+
+
+    localStorage.setItem(
+        "studentName",
+        currentStudent.name
+    );
+
+
+    localStorage.setItem(
+        "studentGrade",
+        currentStudent.grade
+    );
+
+
+    const grade =
+        String(currentStudent.grade)
+        .trim()
+        .toLowerCase();
+
+
+    if (grade === "grade 5") {
+
+        window.location.href =
+            "grade5.html";
+
+    }
+
+    else if (grade === "grade 6") {
+
+        window.location.href =
+            "grade6.html";
+
+    }
+
+    else if (grade === "grade 7") {
+
+        window.location.href =
+            "grade7.html";
+
+    }
+
+    else if (grade === "grade 8") {
+
+        window.location.href =
+            "grade8.html";
+
+    }
+
+    else if (grade === "grade 9") {
+
+        window.location.href =
+            "grade9.html";
+
+    }
+
+    else {
+
+        alert(
+            "No quiz is available for this grade yet."
+        );
+
+    }
+
+}
+
+</script>
 
 
 </body>
