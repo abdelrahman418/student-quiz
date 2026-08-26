@@ -3,8 +3,11 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
     <title>Student Quiz</title>
 
@@ -14,210 +17,245 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
         }
 
         body {
+            font-family: Arial, sans-serif;
             min-height: 100vh;
+
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #0f172a,
+                    #1e3a8a,
+                    #2563eb
+                );
         }
 
-        .container {
+        .card {
             width: 90%;
-            max-width: 500px;
+            max-width: 450px;
+
             background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+
+            padding: 45px 35px;
+
+            border-radius: 24px;
+
+            box-shadow:
+                0 25px 60px
+                rgba(0, 0, 0, 0.25);
+
+            text-align: center;
         }
 
-        .logo {
-            text-align: center;
-            font-size: 50px;
-            margin-bottom: 10px;
+        .icon {
+            width: 80px;
+            height: 80px;
+
+            margin: 0 auto 20px;
+
+            border-radius: 20px;
+
+            background: #2563eb;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-size: 40px;
         }
 
         h1 {
-            text-align: center;
-            color: #1e3a8a;
+            color: #0f172a;
+
+            font-size: 32px;
+
             margin-bottom: 10px;
         }
 
         .subtitle {
-            text-align: center;
-            color: #666;
-            margin-bottom: 30px;
+            color: #64748b;
+
+            margin-bottom: 35px;
+
+            font-size: 15px;
         }
 
         label {
             display: block;
-            margin-bottom: 8px;
+
+            text-align: left;
+
             font-weight: bold;
-            color: #333;
+
+            color: #334155;
+
+            margin-bottom: 10px;
         }
 
-        input,
-        select {
+        input {
             width: 100%;
-            padding: 14px;
-            margin-bottom: 20px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
+
+            padding: 15px;
+
+            border: 2px solid #e2e8f0;
+
+            border-radius: 12px;
+
             font-size: 16px;
+
             outline: none;
+
+            transition: 0.2s;
         }
 
-        input:focus,
-        select:focus {
+        input:focus {
             border-color: #2563eb;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(37, 99, 235, 0.12);
         }
 
         button {
             width: 100%;
+
+            margin-top: 25px;
+
             padding: 15px;
+
             border: none;
-            border-radius: 10px;
+
+            border-radius: 12px;
+
             background: #2563eb;
+
             color: white;
-            font-size: 18px;
+
+            font-size: 17px;
+
             font-weight: bold;
+
             cursor: pointer;
+
+            transition: 0.2s;
         }
 
         button:hover {
             background: #1d4ed8;
+
+            transform: translateY(-2px);
+        }
+
+        .message {
+            margin-top: 18px;
+
+            color: #dc2626;
+
+            font-size: 14px;
         }
 
         .footer {
-            text-align: center;
-            margin-top: 25px;
-            color: #888;
-            font-size: 14px;
+            margin-top: 30px;
+
+            color: #94a3b8;
+
+            font-size: 13px;
         }
 
     </style>
 
 </head>
 
+
 <body>
 
-    <div class="container">
 
-        <div class="logo">🎓</div>
+    <div class="card">
 
-        <h1>Student Quiz</h1>
+
+        <div class="icon">
+            🎓
+        </div>
+
+
+        <h1>
+            Student Quiz
+        </h1>
+
 
         <p class="subtitle">
-            Welcome! Enter your information to start your quiz.
+            Enter your Student ID to continue
         </p>
 
-        <label>Your Name</label>
+
+        <label for="studentID">
+            Student ID
+        </label>
+
 
         <input
             type="text"
-            id="studentName"
-            placeholder="Enter your name"
+            id="studentID"
+            placeholder="Example: ST-0001"
         >
 
-        <label>Your Age</label>
 
-        <input
-            type="number"
-            id="studentAge"
-            placeholder="Enter your age"
-        >
-
-        <label>Select Your Grade</label>
-        <select id="studentGrade">
-
-    <option value="">Select Grade</option>
-
-    <option value="grade5.html">
-        Grade 5
-    </option>
-
-    <option value="grade6.html">
-        Grade 6
-    </option>
-
-    <option value="grade7.html">
-        Grade 7
-    </option>
-
-    <option value="grade8.html">
-        Grade 8
-    </option>
-
-    <option value="grade9.html">
-        Grade 9
-    </option>
-
-</select>
-
-        <select id="studentGrade">
-
-            <option value="">Select Grade</option>
-
-            <option value="grade5.html">
-                Grade 5
-            </option>
-
-        </select>
-
-        <button onclick="startQuiz()">
-            Start Quiz
+        <button onclick="login()">
+            LOGIN →
         </button>
 
-        <p class="footer">
-            Good luck! 🍀
+
+        <p
+            class="message"
+            id="message">
         </p>
+
+
+        <p class="footer">
+            Online Examination System
+        </p>
+
 
     </div>
 
 
     <script>
 
-        function startQuiz() {
+        function login() {
 
-            let name =
-                document.getElementById("studentName").value;
-
-            let age =
-                document.getElementById("studentAge").value;
-
-            let grade =
-                document.getElementById("studentGrade").value;
+            let id =
+                document
+                .getElementById("studentID")
+                .value
+                .trim();
 
 
-            if (name == "" || age == "" || grade == "") {
+            if (id == "") {
 
-                alert(
-                    "Please enter your name, age and grade."
-                );
+                document
+                .getElementById("message")
+                .innerHTML =
+                "Please enter your Student ID.";
 
                 return;
             }
 
 
-            localStorage.setItem(
-                "studentName",
-                name
-            );
-
-            localStorage.setItem(
-                "studentAge",
-                age
-            );
-
-
-            window.location.href = grade;
+            document
+            .getElementById("message")
+            .innerHTML =
+            "Student ID received.";
 
         }
 
     </script>
+
 
 </body>
 
