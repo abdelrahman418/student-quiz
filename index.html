@@ -1,13 +1,10 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
 
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Student Quiz</title>
 
@@ -28,12 +25,7 @@
             align-items: center;
 
             background:
-                linear-gradient(
-                    135deg,
-                    #0f172a,
-                    #1e3a8a,
-                    #2563eb
-                );
+                linear-gradient(135deg, #0f172a, #1e3a8a, #2563eb);
         }
 
         .card {
@@ -47,8 +39,7 @@
             border-radius: 24px;
 
             box-shadow:
-                0 25px 60px
-                rgba(0, 0, 0, 0.25);
+                0 25px 60px rgba(0, 0, 0, 0.25);
 
             text-align: center;
         }
@@ -72,99 +63,103 @@
 
         h1 {
             color: #0f172a;
-
             font-size: 32px;
-
             margin-bottom: 10px;
         }
 
         .subtitle {
             color: #64748b;
-
             margin-bottom: 35px;
-
-            font-size: 15px;
         }
 
         label {
             display: block;
-
             text-align: left;
-
             font-weight: bold;
-
             color: #334155;
-
             margin-bottom: 10px;
         }
 
         input {
             width: 100%;
-
             padding: 15px;
 
             border: 2px solid #e2e8f0;
-
             border-radius: 12px;
 
             font-size: 16px;
-
             outline: none;
-
-            transition: 0.2s;
         }
 
         input:focus {
             border-color: #2563eb;
-
-            box-shadow:
-                0 0 0 3px
-                rgba(37, 99, 235, 0.12);
         }
 
         button {
             width: 100%;
 
             margin-top: 25px;
-
             padding: 15px;
 
             border: none;
-
             border-radius: 12px;
 
             background: #2563eb;
-
             color: white;
 
             font-size: 17px;
-
             font-weight: bold;
 
             cursor: pointer;
-
-            transition: 0.2s;
         }
 
         button:hover {
             background: #1d4ed8;
+        }
 
-            transform: translateY(-2px);
+        button:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
         }
 
         .message {
-            margin-top: 18px;
-
-            color: #dc2626;
-
+            margin-top: 20px;
             font-size: 14px;
+            min-height: 20px;
+        }
+
+        .success {
+            color: #16a34a;
+        }
+
+        .error {
+            color: #dc2626;
+        }
+
+        .student-info {
+            display: none;
+
+            margin-top: 25px;
+            padding: 20px;
+
+            background: #f8fafc;
+            border-radius: 15px;
+
+            text-align: left;
+        }
+
+        .student-info p {
+            margin-bottom: 10px;
+            color: #334155;
+        }
+
+        .start-button {
+            display: none;
         }
 
         .footer {
             margin-top: 30px;
-
             color: #94a3b8;
-
             font-size: 13px;
         }
 
@@ -178,56 +173,89 @@
 
     <div class="card">
 
-
         <div class="icon">
             🎓
         </div>
 
-
         <h1>
             Student Quiz
         </h1>
-
 
         <p class="subtitle">
             Enter your Student ID to continue
         </p>
 
 
-        <label for="studentID">
-            Student ID
-        </label>
+        <div id="loginBox">
+
+            <label for="studentID">
+                Student ID
+            </label>
+
+            <input
+                type="text"
+                id="studentID"
+                placeholder="Example: ST-0001"
+            >
+
+            <button
+                id="loginButton"
+                onclick="login()">
+                LOGIN →
+            </button>
+
+            <p
+                id="message"
+                class="message">
+            </p>
+
+        </div>
 
 
-        <input
-            type="text"
-            id="studentID"
-            placeholder="Example: ST-0001"
-        >
+        <div
+            id="studentInfo"
+            class="student-info">
+
+            <p>
+                <strong>Name:</strong>
+                <span id="studentName"></span>
+            </p>
+
+            <p>
+                <strong>Grade:</strong>
+                <span id="studentGrade"></span>
+            </p>
+
+        </div>
 
 
-        <button onclick="login()">
-            LOGIN →
+        <button
+            id="startButton"
+            class="start-button"
+            onclick="startQuiz()">
+
+            START QUIZ →
+
         </button>
-
-
-        <p
-            class="message"
-            id="message">
-        </p>
 
 
         <p class="footer">
             Online Examination System
         </p>
 
-
     </div>
 
 
     <script>
 
-        function login() {
+        const API_URL =
+            "https://script.google.com/macros/s/AKfycbwmH45QxI88Mig57T04pW_rjcxWgReGEJFiRKu-NhKTggobOgicUrT-o2BquFp2AVJeyQ/exec";
+
+
+        let currentStudent = null;
+
+
+        async function login() {
 
             let id =
                 document
@@ -236,21 +264,181 @@
                 .trim();
 
 
-            if (id == "") {
+            let message =
+                document.getElementById("message");
 
-                document
-                .getElementById("message")
-                .innerHTML =
-                "Please enter your Student ID.";
+
+            let loginButton =
+                document.getElementById("loginButton");
+
+
+            if (id === "") {
+
+                message.innerHTML =
+                    "Please enter your Student ID.";
+
+                message.className =
+                    "message error";
 
                 return;
             }
 
 
-            document
-            .getElementById("message")
-            .innerHTML =
-            "Student ID received.";
+            loginButton.disabled = true;
+
+            loginButton.innerHTML =
+                "CHECKING...";
+
+
+            message.innerHTML =
+                "";
+
+
+            try {
+
+                let response =
+                    await fetch(
+                        API_URL +
+                        "?id=" +
+                        encodeURIComponent(id)
+                    );
+
+
+                let data =
+                    await response.json();
+
+
+                if (data.success) {
+
+                    currentStudent = data;
+
+
+                    document
+                    .getElementById("studentName")
+                    .innerHTML = data.name;
+
+
+                    document
+                    .getElementById("studentGrade")
+                    .innerHTML = data.grade;
+
+
+                    document
+                    .getElementById("studentInfo")
+                    .style.display = "block";
+
+
+                    document
+                    .getElementById("startButton")
+                    .style.display = "block";
+
+
+                    message.innerHTML =
+                        "Student ID verified successfully!";
+
+
+                    message.className =
+                        "message success";
+
+                } else {
+
+                    message.innerHTML =
+                        "Invalid Student ID. Please try again.";
+
+
+                    message.className =
+                        "message error";
+
+                }
+
+            }
+
+            catch (error) {
+
+                message.innerHTML =
+                    "Connection error. Please try again.";
+
+                message.className =
+                    "message error";
+
+            }
+
+
+            loginButton.disabled = false;
+
+            loginButton.innerHTML =
+                "LOGIN →";
+
+        }
+
+
+        function startQuiz() {
+
+            if (!currentStudent) {
+                return;
+            }
+
+
+            localStorage.setItem(
+                "studentID",
+                currentStudent.id
+            );
+
+
+            localStorage.setItem(
+                "studentName",
+                currentStudent.name
+            );
+
+
+            localStorage.setItem(
+                "studentGrade",
+                currentStudent.grade
+            );
+
+
+            if (currentStudent.grade === "Grade 5") {
+
+                window.location.href =
+                    "grade5.html";
+
+            }
+
+            else if (currentStudent.grade === "Grade 6") {
+
+                window.location.href =
+                    "grade6.html";
+
+            }
+
+            else if (currentStudent.grade === "Grade 7") {
+
+                window.location.href =
+                    "grade7.html";
+
+            }
+
+            else if (currentStudent.grade === "Grade 8") {
+
+                window.location.href =
+                    "grade8.html";
+
+            }
+
+            else if (currentStudent.grade === "Grade 9") {
+
+                window.location.href =
+                    "grade9.html";
+
+            }
+
+            else {
+
+                alert(
+                    "No quiz is available for this grade yet."
+                );
+
+            }
 
         }
 
@@ -260,4 +448,3 @@
 </body>
 
 </html>
-```
