@@ -4,7 +4,6 @@
 <head>
 
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Grade 9 English Exam</title>
@@ -20,14 +19,7 @@
 body {
     font-family: Arial, sans-serif;
     min-height: 100vh;
-
-    background: linear-gradient(
-        135deg,
-        #0f172a,
-        #1e3a8a,
-        #2563eb
-    );
-
+    background: linear-gradient(135deg, #0f172a, #1e3a8a, #2563eb);
     padding: 20px;
 }
 
@@ -42,9 +34,7 @@ body {
     border-radius: 20px;
     padding: 25px;
     margin-bottom: 20px;
-
-    box-shadow:
-        0 20px 50px rgba(0,0,0,0.2);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
 }
 
 .title h1 {
@@ -58,13 +48,9 @@ body {
 
 .student {
     margin-top: 20px;
-
     background: #eff6ff;
-
     padding: 15px;
-
     border-radius: 12px;
-
     color: #1e3a8a;
 }
 
@@ -74,114 +60,84 @@ body {
 
 .timer {
     margin-top: 20px;
-
     background: #f1f5f9;
-
     padding: 12px;
-
     text-align: center;
-
     border-radius: 12px;
-
     font-size: 20px;
-
     font-weight: bold;
 }
 
-.progress {
+.progress-info {
+    display: flex;
+    justify-content: space-between;
     margin-top: 20px;
+    color: #475569;
+    font-size: 14px;
+}
 
+.progress {
+    margin-top: 8px;
     width: 100%;
-
     height: 10px;
-
     background: #e2e8f0;
-
     border-radius: 20px;
-
     overflow: hidden;
 }
 
 .progress-bar {
     height: 100%;
-
     width: 0%;
-
     background: #2563eb;
+    transition: width 0.3s;
 }
 
 .question-card {
     background: white;
-
     border-radius: 20px;
-
     padding: 30px;
-
-    box-shadow:
-        0 20px 50px rgba(0,0,0,0.2);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
 }
 
 .instruction {
     display: inline-block;
-
     background: #eff6ff;
-
     color: #2563eb;
-
     padding: 8px 12px;
-
     border-radius: 10px;
-
     font-weight: bold;
-
     margin-bottom: 20px;
 }
 
 .question-number {
     color: #2563eb;
-
     font-weight: bold;
-
     margin-bottom: 15px;
 }
 
 .question {
     font-size: 21px;
-
     line-height: 1.7;
-
     color: #0f172a;
-
     margin-bottom: 20px;
 }
 
 label {
     display: block;
-
     color: #475569;
-
     font-weight: bold;
-
     margin-bottom: 10px;
 }
 
 textarea {
     width: 100%;
-
     min-height: 130px;
-
     padding: 15px;
-
     border: 2px solid #e2e8f0;
-
     border-radius: 12px;
-
     font-size: 17px;
-
     font-family: Arial;
-
     resize: vertical;
-
     outline: none;
 }
 
@@ -191,66 +147,62 @@ textarea:focus {
 
 .buttons {
     display: flex;
-
     gap: 10px;
-
     margin-top: 20px;
 }
 
 button {
     flex: 1;
-
     padding: 15px;
-
     border: none;
-
     border-radius: 12px;
-
     font-size: 16px;
-
     font-weight: bold;
-
     cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.9;
 }
 
 .previous {
     background: #e2e8f0;
-
     color: #334155;
 }
 
 .next {
     background: #2563eb;
-
     color: white;
 }
 
 .submit {
     background: #16a34a;
-
     color: white;
 }
 
 .result {
     display: none;
-
     background: white;
-
     padding: 40px;
-
     border-radius: 20px;
-
     text-align: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+}
+
+.result h2 {
+    color: #0f172a;
 }
 
 .score {
     font-size: 45px;
-
     font-weight: bold;
-
     color: #2563eb;
-
     margin: 20px;
+}
+
+.result-message {
+    color: #64748b;
+    font-size: 18px;
 }
 
 @media(max-width:600px) {
@@ -269,11 +221,17 @@ button {
 
 </head>
 
+
 <body>
 
 <div class="container">
 
-    <div class="header">
+
+    <!-- =========================
+         بيانات الامتحان
+         ========================= -->
+
+    <div class="header" id="examHeader">
 
         <div class="title">
 
@@ -286,6 +244,7 @@ button {
             </p>
 
         </div>
+
 
         <div class="student">
 
@@ -301,12 +260,30 @@ button {
 
         </div>
 
+
         <div class="timer">
 
             ⏱️ Time Left:
-            <span id="timer">30:00</span>
+
+            <span id="timer">
+                30:00
+            </span>
 
         </div>
+
+
+        <div class="progress-info">
+
+            <span id="questionNumberTop">
+                Question 0 of 0
+            </span>
+
+            <span id="answeredNumber">
+                Answered: 0
+            </span>
+
+        </div>
+
 
         <div class="progress">
 
@@ -320,6 +297,11 @@ button {
     </div>
 
 
+
+    <!-- =========================
+         الامتحان
+         ========================= -->
+
     <div id="exam">
 
         <div class="question-card">
@@ -328,26 +310,32 @@ button {
                 Rewrite / Change the form
             </div>
 
+
             <div
                 id="questionNumber"
                 class="question-number">
             </div>
+
 
             <div
                 id="question"
                 class="question">
             </div>
 
+
             <label>
                 Write the complete sentence:
             </label>
 
+
             <textarea
                 id="answer"
-                placeholder="Write your answer here...">
+                placeholder="Write your complete answer here...">
             </textarea>
 
+
             <div class="buttons">
+
 
                 <button
                     class="previous"
@@ -358,6 +346,7 @@ button {
 
                 </button>
 
+
                 <button
                     class="next"
                     id="nextButton"
@@ -366,6 +355,7 @@ button {
                     Next →
 
                 </button>
+
 
                 <button
                     class="submit"
@@ -377,12 +367,18 @@ button {
 
                 </button>
 
+
             </div>
 
         </div>
 
     </div>
 
+
+
+    <!-- =========================
+         النتيجة
+         ========================= -->
 
     <div
         id="result"
@@ -392,13 +388,986 @@ button {
             🎉 Exam Completed!
         </h2>
 
+
         <div
             id="score"
             class="score">
         </div>
 
-        <p id="resultMessage"></p>
+
+        <p
+            id="resultMessage"
+            class="result-message">
+        </p>
 
     </div>
 
 </div>
+
+
+
+<script>
+
+
+/* =====================================================
+   رابط Google Apps Script
+   ===================================================== */
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbyRZJLJ12V-xxJa1mWMQvNLkhi20SNODf_Yu-lxdBiOpiRr4joPqZF-sRHcWnf2ox96fw/exec";
+
+
+
+/* =====================================================
+   بيانات الطالب
+   ===================================================== */
+
+const studentID =
+localStorage.getItem("studentID");
+
+const studentName =
+localStorage.getItem("studentName");
+
+const studentGrade =
+localStorage.getItem("studentGrade");
+
+
+
+/* =====================================================
+   التأكد من تسجيل الدخول
+   ===================================================== */
+
+if (
+    !studentID ||
+    !studentName ||
+    !studentGrade
+) {
+
+    alert("Please login first.");
+
+    window.location.href =
+        "index.html";
+
+}
+
+
+
+/* =====================================================
+   التأكد أن الطالب Grade 9
+   ===================================================== */
+
+if (
+    String(studentGrade)
+        .trim()
+        .toLowerCase()
+        !==
+    "grade 9"
+) {
+
+    alert(
+        "This exam is only for Grade 9."
+    );
+
+    window.location.href =
+        "index.html";
+
+}
+
+
+
+/* =====================================================
+   عرض بيانات الطالب
+   ===================================================== */
+
+document
+.getElementById("studentName")
+.textContent =
+studentName;
+
+
+document
+.getElementById("studentGrade")
+.textContent =
+studentGrade;
+
+
+
+/* =====================================================
+   ⭐⭐⭐ مكان أسئلة Grade 9 ⭐⭐⭐
+
+   حط أسئلتك هنا.
+
+   الطالب يكتب الجملة كلها.
+
+   Capital / Small مش فارقين.
+
+   مثال:
+
+   {
+       question:
+       "If he (study) hard, he will pass.",
+
+       answers: [
+           "If he studies hard, he will pass."
+       ]
+   }
+
+   لو فيه إجابتين صح ممكن تعمل:
+
+   answers: [
+       "He did not go to school.",
+       "He didn't go to school."
+   ]
+
+   ===================================================== */
+
+
+const questions = [
+
+    /*
+    
+    {
+        question:
+        "If he (study) hard, he will pass.",
+
+        answers: [
+            "If he studies hard, he will pass."
+        ]
+    },
+
+
+    {
+        question:
+        "Ahmed said that he (travel) to Alexandria the following day.",
+
+        answers: [
+            "Ahmed said that he was traveling to Alexandria the following day.",
+            "Ahmed said that he was travelling to Alexandria the following day."
+        ]
+    },
+
+
+    {
+        question:
+        "They (play) football yesterday.",
+
+        answers: [
+            "They played football yesterday."
+        ]
+    },
+
+
+    {
+        question:
+        "She (not / go) to school yesterday because she was ill.",
+
+        answers: [
+            "She did not go to school yesterday because she was ill.",
+            "She didn't go to school yesterday because she was ill."
+        ]
+    }
+
+    */
+
+];
+
+
+
+/* =====================================================
+   متغيرات الامتحان
+   ===================================================== */
+
+let currentQuestion = 0;
+
+let studentAnswers =
+new Array(questions.length).fill("");
+
+let examSubmitted = false;
+
+
+
+/* =====================================================
+   تنظيف الإجابة
+
+   1- Capital / Small مش فارقين
+   2- المسافات الزيادة مش فارقة
+   3- علامات الترقيم البسيطة مش فارقة
+   ===================================================== */
+
+function normalizeAnswer(text) {
+
+    return String(text)
+
+        .toLowerCase()
+
+        .replace(
+            /[.,!?;:"'“”‘’()]/g,
+            ""
+        )
+
+        .replace(
+            /\s+/g,
+            " "
+        )
+
+        .trim();
+
+}
+
+
+
+/* =====================================================
+   تصحيح الإجابة
+   ===================================================== */
+
+function checkAnswer(
+    userAnswer,
+    correctAnswers
+) {
+
+    const user =
+        normalizeAnswer(
+            userAnswer
+        );
+
+
+    if (user === "") {
+
+        return false;
+
+    }
+
+
+    return correctAnswers.some(
+        function(correct) {
+
+            return (
+                normalizeAnswer(correct)
+                ===
+                user
+            );
+
+        }
+    );
+
+}
+
+
+
+/* =====================================================
+   حفظ الإجابة الحالية
+   ===================================================== */
+
+function saveCurrentAnswer() {
+
+    if (
+        questions.length === 0
+    ) {
+
+        return;
+
+    }
+
+
+    const answerBox =
+        document.getElementById(
+            "answer"
+        );
+
+
+    studentAnswers[currentQuestion] =
+        answerBox.value;
+
+}
+
+
+
+/* =====================================================
+   عدد الأسئلة المجاوب عليها
+   ===================================================== */
+
+function updateAnswered() {
+
+    const count =
+        studentAnswers.filter(
+            function(answer) {
+
+                return (
+                    answer.trim() !== ""
+                );
+
+            }
+        ).length;
+
+
+    document
+    .getElementById(
+        "answeredNumber"
+    )
+    .textContent =
+        "Answered: " +
+        count +
+        "/" +
+        questions.length;
+
+}
+
+
+
+/* =====================================================
+   عرض السؤال
+   ===================================================== */
+
+function displayQuestion() {
+
+
+    /* لو مفيش أسئلة */
+
+    if (
+        questions.length === 0
+    ) {
+
+        document
+        .getElementById(
+            "questionNumber"
+        )
+        .textContent =
+            "No questions";
+
+
+        document
+        .getElementById(
+            "questionNumberTop"
+        )
+        .textContent =
+            "Question 0 of 0";
+
+
+        document
+        .getElementById(
+            "question"
+        )
+        .textContent =
+            "Grade 9 questions will be added here.";
+
+
+        document
+        .getElementById(
+            "answer"
+        )
+        .disabled =
+            true;
+
+
+        document
+        .getElementById(
+            "previousButton"
+        )
+        .style.display =
+            "none";
+
+
+        document
+        .getElementById(
+            "nextButton"
+        )
+        .style.display =
+            "none";
+
+
+        document
+        .getElementById(
+            "submitButton"
+        )
+        .style.display =
+            "none";
+
+
+        return;
+
+    }
+
+
+
+    const current =
+        questions[currentQuestion];
+
+
+
+    /* رقم السؤال */
+
+    document
+    .getElementById(
+        "questionNumber"
+    )
+    .textContent =
+        "Question " +
+        (currentQuestion + 1) +
+        " of " +
+        questions.length;
+
+
+    document
+    .getElementById(
+        "questionNumberTop"
+    )
+    .textContent =
+        "Question " +
+        (currentQuestion + 1) +
+        " of " +
+        questions.length;
+
+
+
+    /* السؤال */
+
+    document
+    .getElementById(
+        "question"
+    )
+    .textContent =
+        current.question;
+
+
+
+    /* الإجابة المحفوظة */
+
+    document
+    .getElementById(
+        "answer"
+    )
+    .value =
+        studentAnswers[currentQuestion];
+
+
+
+    /* شريط التقدم */
+
+    const progress =
+        (
+            (currentQuestion + 1)
+            /
+            questions.length
+        ) * 100;
+
+
+    document
+    .getElementById(
+        "progressBar"
+    )
+    .style.width =
+        progress + "%";
+
+
+
+    updateAnswered();
+
+
+
+    /* Previous */
+
+    if (
+        currentQuestion === 0
+    ) {
+
+        document
+        .getElementById(
+            "previousButton"
+        )
+        .style.display =
+            "none";
+
+    } else {
+
+        document
+        .getElementById(
+            "previousButton"
+        )
+        .style.display =
+            "block";
+
+    }
+
+
+
+    /* Next / Submit */
+
+    if (
+        currentQuestion ===
+        questions.length - 1
+    ) {
+
+        document
+        .getElementById(
+            "nextButton"
+        )
+        .style.display =
+            "none";
+
+
+        document
+        .getElementById(
+            "submitButton"
+        )
+        .style.display =
+            "block";
+
+    } else {
+
+        document
+        .getElementById(
+            "nextButton"
+        )
+        .style.display =
+            "block";
+
+
+        document
+        .getElementById(
+            "submitButton"
+        )
+        .style.display =
+            "none";
+
+    }
+
+}
+
+
+
+/* =====================================================
+   Next
+   ===================================================== */
+
+function nextQuestion() {
+
+    saveCurrentAnswer();
+
+
+    if (
+        currentQuestion <
+        questions.length - 1
+    ) {
+
+        currentQuestion++;
+
+        displayQuestion();
+
+    }
+
+}
+
+
+
+/* =====================================================
+   Previous
+   ===================================================== */
+
+function previousQuestion() {
+
+    saveCurrentAnswer();
+
+
+    if (
+        currentQuestion > 0
+    ) {
+
+        currentQuestion--;
+
+        displayQuestion();
+
+    }
+
+}
+
+
+
+/* =====================================================
+   المؤقت
+   ===================================================== */
+
+let timeLeft =
+30 * 60;
+
+
+function updateTimer() {
+
+    const minutes =
+        Math.floor(
+            timeLeft / 60
+        );
+
+
+    const seconds =
+        timeLeft % 60;
+
+
+    document
+    .getElementById(
+        "timer"
+    )
+    .textContent =
+        String(minutes)
+        .padStart(2, "0")
+        +
+        ":" +
+        String(seconds)
+        .padStart(2, "0");
+
+
+
+    if (
+        timeLeft <= 0
+    ) {
+
+        clearInterval(timer);
+
+        submitExam(true);
+
+        return;
+
+    }
+
+
+    timeLeft--;
+
+}
+
+
+const timer =
+setInterval(
+    updateTimer,
+    1000
+);
+
+
+updateTimer();
+
+
+
+/* =====================================================
+   تسليم الامتحان
+   ===================================================== */
+
+async function submitExam(autoSubmit = false) {
+
+    if (
+        examSubmitted
+    ) {
+
+        return;
+
+    }
+
+
+    saveCurrentAnswer();
+
+
+
+    /* لو الوقت خلص */
+
+    if (
+        !autoSubmit
+    ) {
+
+        const unanswered =
+            studentAnswers.filter(
+                function(answer) {
+
+                    return (
+                        answer.trim() === ""
+                    );
+
+                }
+            ).length;
+
+
+        if (
+            unanswered > 0
+        ) {
+
+            const confirmSubmit =
+                confirm(
+                    "You have " +
+                    unanswered +
+                    " unanswered question(s).\n\n" +
+                    "Do you want to submit anyway?"
+                );
+
+
+            if (
+                !confirmSubmit
+            ) {
+
+                return;
+
+            }
+
+        }
+
+
+        const finalConfirm =
+            confirm(
+                "Are you sure you want to submit your exam?"
+            );
+
+
+        if (
+            !finalConfirm
+        ) {
+
+            return;
+
+        }
+
+    }
+
+
+
+    examSubmitted = true;
+
+
+    clearInterval(timer);
+
+
+
+    /* حساب الدرجة */
+
+    let score = 0;
+
+
+    for (
+        let i = 0;
+        i < questions.length;
+        i++
+    ) {
+
+        if (
+            checkAnswer(
+                studentAnswers[i],
+                questions[i].answers
+            )
+        ) {
+
+            score++;
+
+        }
+
+    }
+
+
+
+    /* إرسال النتيجة */
+
+    await saveResult(
+        score
+    );
+
+
+
+    /* عرض النتيجة */
+
+    showResult(
+        score
+    );
+
+}
+
+
+
+/* =====================================================
+   إرسال النتيجة إلى Google Sheets
+   ===================================================== */
+
+async function saveResult(score) {
+
+    const total =
+        questions.length;
+
+
+    const percentage =
+        total > 0
+        ?
+        Math.round(
+            (score / total) * 100
+        )
+        :
+        0;
+
+
+    try {
+
+        await fetch(
+            API_URL,
+            {
+
+                method: "POST",
+
+                body:
+                    JSON.stringify({
+
+                        studentID:
+                            studentID,
+
+                        studentName:
+                            studentName,
+
+                        grade:
+                            studentGrade,
+
+                        score:
+                            score,
+
+                        total:
+                            total,
+
+                        percentage:
+                            percentage
+
+                    })
+
+            }
+        );
+
+
+        console.log(
+            "Result saved successfully"
+        );
+
+    }
+
+    catch(error) {
+
+        console.error(
+            "Error saving result:",
+            error
+        );
+
+    }
+
+}
+
+
+
+/* =====================================================
+   عرض النتيجة
+   ===================================================== */
+
+function showResult(score) {
+
+    const total =
+        questions.length;
+
+
+    const percentage =
+        total > 0
+        ?
+        Math.round(
+            (score / total) * 100
+        )
+        :
+        0;
+
+
+
+    document
+    .getElementById(
+        "examHeader"
+    )
+    .style.display =
+        "none";
+
+
+    document
+    .getElementById(
+        "exam"
+    )
+    .style.display =
+        "none";
+
+
+    document
+    .getElementById(
+        "result"
+    )
+    .style.display =
+        "block";
+
+
+
+    document
+    .getElementById(
+        "score"
+    )
+    .textContent =
+        score +
+        " / " +
+        total;
+
+
+
+    let message;
+
+
+
+    if (
+        percentage >= 90
+    ) {
+
+        message =
+            "Excellent! 🌟";
+
+    }
+
+    else if (
+        percentage >= 75
+    ) {
+
+        message =
+            "Very good! 👏";
+
+    }
+
+    else if (
+        percentage >= 50
+    ) {
+
+        message =
+            "Good effort! 👍";
+
+    }
+
+    else {
+
+        message =
+            "Keep practicing! 💪";
+
+    }
+
+
+
+    document
+    .getElementById(
+        "resultMessage"
+    )
+    .textContent =
+        message +
+        " Your percentage is " +
+        percentage +
+        "%.";
+
+}
+
+
+
+/* =====================================================
+   تشغيل الامتحان
+   ===================================================== */
+
+displayQuestion();
+
+</script>
+
+</body>
+
+</html>
