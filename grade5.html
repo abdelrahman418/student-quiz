@@ -1,85 +1,1383 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Grade 5 Quiz</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Grade 5 English Exam</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f172a, #1e3a8a, #2563eb);
+    padding: 25px 15px;
+}
+
+.container {
+    width: 100%;
+    max-width: 900px;
+    margin: auto;
+}
+
+.header {
+    background: white;
+    border-radius: 22px;
+    padding: 25px;
+    margin-bottom: 20px;
+    box-shadow: 0 20px 50px rgba(0,0,0,.20);
+}
+
+.top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.title h1 {
+    color: #0f172a;
+    font-size: 30px;
+    margin-bottom: 8px;
+}
+
+.title p {
+    color: #64748b;
+}
+
+.student {
+    background: #eff6ff;
+    padding: 15px 20px;
+    border-radius: 15px;
+    color: #1e3a8a;
+}
+
+.student p {
+    margin: 5px 0;
+}
+
+.timer {
+    margin-top: 20px;
+    background: #f1f5f9;
+    border-radius: 12px;
+    padding: 12px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    color: #0f172a;
+}
+
+.progress-area {
+    margin-top: 18px;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    color: #475569;
+    font-size: 14px;
+}
+
+.progress {
+    width: 100%;
+    height: 10px;
+    background: #e2e8f0;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 5%;
+    background: #2563eb;
+    transition: width .3s;
+}
+
+.question-card {
+    background: white;
+    border-radius: 22px;
+    padding: 35px;
+    box-shadow: 0 20px 50px rgba(0,0,0,.20);
+}
+
+.question-number {
+    color: #2563eb;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.question {
+    color: #0f172a;
+    font-size: 21px;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+.answer-label {
+    display: block;
+    color: #475569;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+textarea {
+    width: 100%;
+    min-height: 130px;
+    resize: vertical;
+
+    border: 2px solid #e2e8f0;
+    border-radius: 14px;
+
+    padding: 15px;
+
+    font-family: Arial, sans-serif;
+    font-size: 17px;
+
+    outline: none;
+}
+
+textarea:focus {
+    border-color: #2563eb;
+}
+
+.navigation {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.nav-button {
+    flex: 1;
+    padding: 15px;
+
+    border: none;
+    border-radius: 12px;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.previous {
+    background: #e2e8f0;
+    color: #334155;
+}
+
+.next {
+    background: #2563eb;
+    color: white;
+}
+
+.submit {
+    background: #16a34a;
+    color: white;
+}
+
+.result {
+    display: none;
+
+    background: white;
+
+    border-radius: 22px;
+
+    padding: 50px 30px;
+
+    text-align: center;
+
+    box-shadow: 0 20px 50px rgba(0,0,0,.20);
+}
+
+.result-icon {
+    font-size: 65px;
+    margin-bottom: 15px;
+}
+
+.result h2 {
+    color: #0f172a;
+    font-size: 32px;
+}
+
+.score {
+    color: #2563eb;
+    font-size: 48px;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+.result-message {
+    color: #64748b;
+    font-size: 18px;
+}
+
+@media(max-width:600px) {
+
+    .question-card {
+        padding: 25px 20px;
+    }
+
+    .question {
+        font-size: 18px;
+    }
+
+    .navigation {
+        flex-direction: column;
+    }
+
+}
+
+</style>
+
 </head>
+
 
 <body>
 
-    <h1>Grade 5 Quiz</h1>
 
-    <p>Answer all questions.</p>
-
-
-    <!-- Question 1 -->
-
-    <h3>1. What is 5 + 5?</h3>
-
-    <input type="radio" name="q1" value="10"> 10<br>
-    <input type="radio" name="q1" value="15"> 15<br>
-    <input type="radio" name="q1" value="20"> 20<br>
-    <input type="radio" name="q1" value="5"> 5<br>
+<div class="container">
 
 
-    <!-- Question 2 -->
+    <!-- HEADER -->
 
-    <h3>2. What is the capital of Egypt?</h3>
+    <div class="header" id="examHeader">
 
-    <input type="radio" name="q2" value="Cairo"> Cairo<br>
-    <input type="radio" name="q2" value="Aswan"> Aswan<br>
-    <input type="radio" name="q2" value="Luxor"> Luxor<br>
-    <input type="radio" name="q2" value="Giza"> Giza<br>
+        <div class="top">
 
+            <div class="title">
 
-    <!-- Question 3 -->
+                <h1>
+                    🎓 Grade 5 English Exam
+                </h1>
 
-    <h3>3. How many days are in a week?</h3>
+                <p>
+                    Rewrite the following sentences using the word in brackets.
+                </p>
 
-    <input type="radio" name="q3" value="7"> 7<br>
-    <input type="radio" name="q3" value="5"> 5<br>
-    <input type="radio" name="q3" value="10"> 10<br>
-    <input type="radio" name="q3" value="12"> 12<br>
-
-
-    <br>
-
-    <button onclick="submitQuiz()">Submit Quiz</button>
+            </div>
 
 
-    <h2 id="result"></h2>
+            <div class="student">
+
+                <p>
+                    <strong>Name:</strong>
+                    <span id="studentName"></span>
+                </p>
+
+                <p>
+                    <strong>Grade:</strong>
+                    <span id="studentGrade"></span>
+                </p>
+
+            </div>
+
+        </div>
 
 
-    <script>
+        <div class="timer">
 
-        function submitQuiz() {
+            ⏱️ Time Left:
 
-            let score = 0;
+            <span id="timer">
+                30:00
+            </span>
 
-            if (document.querySelector('input[name="q1"]:checked')?.value == "10") {
-                score++;
-            }
+        </div>
 
-            if (document.querySelector('input[name="q2"]:checked')?.value == "Cairo") {
-                score++;
-            }
 
-            if (document.querySelector('input[name="q3"]:checked')?.value == "7") {
-                score++;
-            }
+        <div class="progress-area">
 
-            document.getElementById("result").innerHTML =
-                "Your Score: " + score + " / 3";
+            <div class="progress-info">
+
+                <span id="questionNumber">
+                    Question 1 of 20
+                </span>
+
+                <span id="answeredNumber">
+                    Answered: 0/20
+                </span>
+
+            </div>
+
+
+            <div class="progress">
+
+                <div
+                    id="progressBar"
+                    class="progress-bar">
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- EXAM -->
+
+    <div id="exam">
+
+        <div class="question-card">
+
+            <div
+                id="questionNumberInside"
+                class="question-number">
+            </div>
+
+
+            <div
+                id="question"
+                class="question">
+            </div>
+
+
+            <label class="answer-label">
+
+                Your answer:
+
+            </label>
+
+
+            <textarea
+                id="answer"
+                placeholder="Write your complete answer here...">
+            </textarea>
+
+
+            <div class="navigation">
+
+                <button
+                    id="previousButton"
+                    class="nav-button previous"
+                    onclick="previousQuestion()">
+
+                    ← Previous
+
+                </button>
+
+
+                <button
+                    id="nextButton"
+                    class="nav-button next"
+                    onclick="nextQuestion()">
+
+                    Next →
+
+                </button>
+
+
+                <button
+                    id="submitButton"
+                    class="nav-button submit"
+                    onclick="submitExam()"
+                    style="display:none;">
+
+                    Submit Exam ✓
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- RESULT -->
+
+    <div
+        id="result"
+        class="result">
+
+        <div class="result-icon">
+            🎉
+        </div>
+
+
+        <h2>
+            Exam Completed!
+        </h2>
+
+
+        <div
+            id="score"
+            class="score">
+        </div>
+
+
+        <p
+            id="resultMessage"
+            class="result-message">
+        </p>
+
+    </div>
+
+
+</div>
+
+
+
+<script>
+
+
+/*
+==================================================
+GOOGLE APPS SCRIPT URL
+==================================================
+*/
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbyRZJLJ12V-xxJa1mWMQvNLkhi20SNODf_Yu-lxdBiOpiRr4joPqZF-sRHcWnf2ox96fw/exec";
+
+
+/*
+==================================================
+STUDENT DATA
+==================================================
+*/
+
+const studentID =
+localStorage.getItem("studentID");
+
+const studentName =
+localStorage.getItem("studentName");
+
+const studentGrade =
+localStorage.getItem("studentGrade");
+
+
+/*
+==================================================
+CHECK STUDENT
+==================================================
+*/
+
+if (!studentID || !studentName || !studentGrade) {
+
+    alert(
+        "Please login first."
+    );
+
+    window.location.href =
+        "index.html";
+
+}
+
+
+/*
+==================================================
+CHECK GRADE
+==================================================
+*/
+
+if (
+    String(studentGrade)
+    .trim()
+    .toLowerCase()
+    !==
+    "grade 5"
+) {
+
+    alert(
+        "This exam is only for Grade 5."
+    );
+
+    window.location.href =
+        "index.html";
+
+}
+
+
+/*
+==================================================
+SHOW STUDENT
+==================================================
+*/
+
+document
+.getElementById("studentName")
+.textContent =
+studentName;
+
+
+document
+.getElementById("studentGrade")
+.textContent =
+studentGrade;
+
+
+/*
+==================================================
+QUESTIONS
+==================================================
+*/
+
+const questions = [
+
+    {
+        question:
+        "He didn't study hard, so he got low marks. (If)",
+
+        answers: [
+
+            "If he had studied hard, he wouldn't have got low marks.",
+
+            "If he had studied hard, he would have got high marks."
+
+        ]
+    },
+
+
+    {
+        question:
+        '"I am traveling to Alexandria tomorrow," said Ahmed. (that)',
+
+        answers: [
+
+            "Ahmed said that he was traveling to Alexandria the following day.",
+
+            "Ahmed said that he was traveling to Alexandria the next day."
+
+        ]
+    },
+
+
+    {
+        question:
+        "The government will build a new bridge next year. (be)",
+
+        answers: [
+
+            "A new bridge will be built next year by the government.",
+
+            "A new bridge will be built next year."
+
+        ]
+    },
+
+
+    {
+        question:
+        "It is forbidden to park your car here. (mustn't)",
+
+        answers: [
+
+            "You mustn't park your car here."
+
+        ]
+    },
+
+
+    {
+        question:
+        "Although he is rich, he is not happy. (but)",
+
+        answers: [
+
+            "He is rich, but he is not happy."
+
+        ]
+    },
+
+
+    {
+        question:
+        '"We have cleaned the room," the girls said. (that)',
+
+        answers: [
+
+            "The girls said that they had cleaned the room."
+
+        ]
+    },
+
+
+    {
+        question:
+        "I advise you to brush your teeth. (should)",
+
+        answers: [
+
+            "You should brush your teeth."
+
+        ]
+    },
+
+
+    {
+        question:
+        "She didn't wake up early, so she missed the bus. (had)",
+
+        answers: [
+
+            "If she had woken up early, she wouldn't have missed the bus."
+
+        ]
+    },
+
+
+    {
+        question:
+        "People will use electric cars in the future. (used)",
+
+        answers: [
+
+            "Electric cars will be used in the future."
+
+        ]
+    },
+
+
+    {
+        question:
+        '"I can solve the problem," he said to me. (told)',
+
+        answers: [
+
+            "He told me that he could solve the problem."
+
+        ]
+    },
+
+
+    {
+        question:
+        "It is a rule to wear the school uniform. (must)",
+
+        answers: [
+
+            "You must wear the school uniform."
+
+        ]
+    },
+
+
+    {
+        question:
+        "Don't make noise in the library. (Stop)",
+
+        answers: [
+
+            "Stop making noise in the library."
+
+        ]
+    },
+
+
+    {
+        question:
+        "Social media is useful. It wastes our time. (On the other hand)",
+
+        answers: [
+
+            "Social media is useful; on the other hand, it wastes our time.",
+
+            "Social media is useful. On the other hand, it wastes our time."
+
+        ]
+    },
+
+
+    {
+        question:
+        "They didn't play well, so they lost the match. (would have)",
+
+        answers: [
+
+            "If they had played well, they would have won the match.",
+
+            "If they had played well, they wouldn't have lost the match."
+
+        ]
+    },
+
+
+    {
+        question:
+        '"I play tennis every Friday," said Ali. (that)',
+
+        answers: [
+
+            "Ali said that he played tennis every Friday.",
+
+            "Ali said that he plays tennis every Friday."
+
+        ]
+    },
+
+
+    {
+        question:
+        "We won't use petrol in the future. (won't be)",
+
+        answers: [
+
+            "Petrol won't be used in the future."
+
+        ]
+    },
+
+
+    {
+        question:
+        "It is not a good idea to stay up late. (shouldn't)",
+
+        answers: [
+
+            "You shouldn't stay up late."
+
+        ]
+    },
+
+
+    {
+        question:
+        "He was ill, but he went to work. (Although)",
+
+        answers: [
+
+            "Although he was ill, he went to work."
+
+        ]
+    },
+
+
+    {
+        question:
+        '"My father bought a new car," said Hoda. (her)',
+
+        answers: [
+
+            "Hoda said that her father had bought a new car."
+
+        ]
+    },
+
+
+    {
+        question:
+        "He drove fast, so he made an accident. (so)",
+
+        answers: [
+
+            "He drove fast, so he made an accident."
+
+        ]
+    }
+
+];
+
+
+/*
+==================================================
+EXAM VARIABLES
+==================================================
+*/
+
+let currentQuestion = 0;
+
+let answers =
+new Array(questions.length)
+.fill("");
+
+
+let examSubmitted = false;
+
+
+/*
+==================================================
+NORMALIZE ANSWER
+==================================================
+*/
+
+function normalizeAnswer(text) {
+
+    return String(text)
+
+        .toLowerCase()
+
+        .replace(/[.,!?;:"'“”‘’()]/g, "")
+
+        .replace(/\s+/g, " ")
+
+        .trim();
+
+}
+
+
+/*
+==================================================
+CHECK ANSWER
+==================================================
+*/
+
+function checkAnswer(userAnswer, correctAnswers) {
+
+    const user =
+        normalizeAnswer(userAnswer);
+
+
+    if (user === "") {
+        return false;
+    }
+
+
+    return correctAnswers.some(
+        correct => {
+
+            return (
+                normalizeAnswer(correct)
+                ===
+                user
+            );
+
+        }
+    );
+
+}
+
+
+/*
+==================================================
+SAVE CURRENT ANSWER
+==================================================
+*/
+
+function saveCurrentAnswer() {
+
+    const box =
+        document.getElementById("answer");
+
+
+    answers[currentQuestion] =
+        box.value;
+
+}
+
+
+/*
+==================================================
+UPDATE ANSWERED
+==================================================
+*/
+
+function updateAnswered() {
+
+    const count =
+        answers.filter(
+            answer =>
+                answer.trim() !== ""
+        ).length;
+
+
+    document
+    .getElementById("answeredNumber")
+    .textContent =
+        "Answered: " +
+        count +
+        "/" +
+        questions.length;
+
+}
+
+
+/*
+==================================================
+DISPLAY QUESTION
+==================================================
+*/
+
+function displayQuestion() {
+
+    const item =
+        questions[currentQuestion];
+
+
+    document
+    .getElementById("questionNumberInside")
+    .textContent =
+        "Question " +
+        (currentQuestion + 1) +
+        " of " +
+        questions.length;
+
+
+    document
+    .getElementById("question")
+    .textContent =
+        item.question;
+
+
+    document
+    .getElementById("answer")
+    .value =
+        answers[currentQuestion];
+
+
+    document
+    .getElementById("questionNumber")
+    .textContent =
+        "Question " +
+        (currentQuestion + 1) +
+        " of " +
+        questions.length;
+
+
+    document
+    .getElementById("progressBar")
+    .style.width =
+        (
+            ((currentQuestion + 1)
+            / questions.length)
+            * 100
+        ) +
+        "%";
+
+
+    updateAnswered();
+
+
+    if (currentQuestion === 0) {
+
+        document
+        .getElementById("previousButton")
+        .style.display =
+            "none";
+
+    }
+
+    else {
+
+        document
+        .getElementById("previousButton")
+        .style.display =
+            "block";
+
+    }
+
+
+    if (
+        currentQuestion ===
+        questions.length - 1
+    ) {
+
+        document
+        .getElementById("nextButton")
+        .style.display =
+            "none";
+
+
+        document
+        .getElementById("submitButton")
+        .style.display =
+            "block";
+
+    }
+
+    else {
+
+        document
+        .getElementById("nextButton")
+        .style.display =
+            "block";
+
+
+        document
+        .getElementById("submitButton")
+        .style.display =
+            "none";
+
+    }
+
+}
+
+
+/*
+==================================================
+NEXT
+==================================================
+*/
+
+function nextQuestion() {
+
+    saveCurrentAnswer();
+
+
+    if (
+        currentQuestion <
+        questions.length - 1
+    ) {
+
+        currentQuestion++;
+
+        displayQuestion();
+
+    }
+
+}
+
+
+/*
+==================================================
+PREVIOUS
+==================================================
+*/
+
+function previousQuestion() {
+
+    saveCurrentAnswer();
+
+
+    if (
+        currentQuestion > 0
+    ) {
+
+        currentQuestion--;
+
+        displayQuestion();
+
+    }
+
+}
+
+
+/*
+==================================================
+TIMER
+==================================================
+*/
+
+let timeLeft =
+30 * 60;
+
+
+function updateTimer() {
+
+    const minutes =
+        Math.floor(
+            timeLeft / 60
+        );
+
+
+    const seconds =
+        timeLeft % 60;
+
+
+    document
+    .getElementById("timer")
+    .textContent =
+        String(minutes)
+        .padStart(2, "0")
+        +
+        ":" +
+        String(seconds)
+        .padStart(2, "0");
+
+
+    if (timeLeft <= 0) {
+
+        clearInterval(timer);
+
+
+        alert(
+            "Time is over. Your exam will be submitted automatically."
+        );
+
+
+        submitExam();
+
+        return;
+
+    }
+
+
+    timeLeft--;
+
+}
+
+
+const timer =
+    setInterval(
+        updateTimer,
+        1000
+    );
+
+
+updateTimer();
+
+
+/*
+==================================================
+SUBMIT EXAM
+==================================================
+*/
+
+async function submitExam() {
+
+    if (examSubmitted) {
+        return;
+    }
+
+
+    saveCurrentAnswer();
+
+
+    const unanswered =
+        answers.filter(
+            answer =>
+                answer.trim() === ""
+        ).length;
+
+
+    if (unanswered > 0) {
+
+        const confirmSubmit =
+            confirm(
+                "You have " +
+                unanswered +
+                " unanswered question(s).\n\n" +
+                "Do you want to submit anyway?"
+            );
+
+
+        if (!confirmSubmit) {
+
+            return;
 
         }
 
-    </script>
+    }
+
+
+    const finalConfirm =
+        confirm(
+            "Are you sure you want to submit your exam?"
+        );
+
+
+    if (!finalConfirm) {
+
+        return;
+
+    }
+
+
+    examSubmitted = true;
+
+
+    clearInterval(timer);
+
+
+    let score = 0;
+
+
+    for (
+        let i = 0;
+        i < questions.length;
+        i++
+    ) {
+
+        if (
+            checkAnswer(
+                answers[i],
+                questions[i].answers
+            )
+        ) {
+
+            score++;
+
+        }
+
+    }
+
+
+    await saveResult(score);
+
+
+    showResult(score);
+
+}
+
+
+/*
+==================================================
+SAVE RESULT TO GOOGLE SHEETS
+==================================================
+*/
+
+async function saveResult(score) {
+
+    const total =
+        questions.length;
+
+
+    const percentage =
+        Math.round(
+            (score / total) * 100
+        );
+
+
+    try {
+
+        await fetch(
+            API_URL,
+            {
+
+                method: "POST",
+
+                body: JSON.stringify({
+
+                    studentID:
+                        studentID,
+
+                    studentName:
+                        studentName,
+
+                    grade:
+                        studentGrade,
+
+                    score:
+                        score,
+
+                    total:
+                        total,
+
+                    percentage:
+                        percentage
+
+                })
+
+            }
+        );
+
+
+        console.log(
+            "Result saved successfully."
+        );
+
+    }
+
+    catch(error) {
+
+        console.error(
+            "Error saving result:",
+            error
+        );
+
+    }
+
+}
+
+
+/*
+==================================================
+SHOW RESULT
+==================================================
+*/
+
+function showResult(score) {
+
+    const total =
+        questions.length;
+
+
+    const percentage =
+        Math.round(
+            (score / total) * 100
+        );
+
+
+    document
+    .getElementById("examHeader")
+    .style.display =
+        "none";
+
+
+    document
+    .getElementById("exam")
+    .style.display =
+        "none";
+
+
+    document
+    .getElementById("result")
+    .style.display =
+        "block";
+
+
+    document
+    .getElementById("score")
+    .textContent =
+        score +
+        " / " +
+        total;
+
+
+    let message;
+
+
+    if (percentage >= 90) {
+
+        message =
+            "Excellent! 🌟";
+
+    }
+
+    else if (percentage >= 75) {
+
+        message =
+            "Very good! 👏";
+
+    }
+
+    else if (percentage >= 50) {
+
+        message =
+            "Good effort! 👍";
+
+    }
+
+    else {
+
+        message =
+            "Keep practicing! 💪";
+
+    }
+
+
+    document
+    .getElementById("resultMessage")
+    .textContent =
+        message +
+        " Your percentage is " +
+        percentage +
+        "%.";
+
+}
+
+
+/*
+==================================================
+START EXAM
+==================================================
+*/
+
+displayQuestion();
+
+</script>
+
 
 </body>
 
 </html>
-```
