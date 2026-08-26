@@ -263,3 +263,1152 @@ button:hover {
 
 .result {
     display: none;
+
+    background: white;
+
+    padding: 40px;
+
+    border-radius: 20px;
+
+    text-align: center;
+
+    box-shadow:
+        0 20px 50px rgba(0,0,0,0.2);
+}
+
+.result h2 {
+    color: #0f172a;
+}
+
+.score {
+    font-size: 45px;
+
+    font-weight: bold;
+
+    color: #2563eb;
+
+    margin: 20px;
+}
+
+.result-message {
+    color: #64748b;
+
+    font-size: 18px;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:600px) {
+
+    .buttons {
+        flex-direction: column;
+    }
+
+    .question {
+        font-size: 18px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+<!-- ================= HEADER ================= -->
+
+<div class="header" id="examHeader">
+
+    <div class="title">
+
+        <h1>
+            🎓 Grade 9 English Exam
+        </h1>
+
+        <p>
+            Rewrite / Change the form
+        </p>
+
+    </div>
+
+
+    <div class="student">
+
+        <p>
+            <strong>Name:</strong>
+            <span id="studentName"></span>
+        </p>
+
+        <p>
+            <strong>Grade:</strong>
+            <span id="studentGrade"></span>
+        </p>
+
+    </div>
+
+
+    <div class="timer">
+
+        ⏱️ Time Left:
+        <span id="timer">
+            30:00
+        </span>
+
+    </div>
+
+
+    <div class="progress-info">
+
+        <span id="questionNumberTop">
+            Question 1 of 14
+        </span>
+
+        <span id="answeredNumber">
+            Answered: 0/14
+        </span>
+
+    </div>
+
+
+    <div class="progress">
+
+        <div
+            id="progressBar"
+            class="progress-bar">
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= EXAM ================= -->
+
+<div id="exam">
+
+    <div class="question-card">
+
+        <div class="instruction">
+            Rewrite / Change the form
+        </div>
+
+
+        <div
+            id="questionNumber"
+            class="question-number">
+        </div>
+
+
+        <div
+            id="question"
+            class="question">
+        </div>
+
+
+        <label>
+            Write the complete sentence:
+        </label>
+
+
+        <textarea
+            id="answer"
+            placeholder="Write your complete answer here...">
+        </textarea>
+
+
+        <div class="buttons">
+
+
+            <button
+                class="previous"
+                id="previousButton"
+                onclick="previousQuestion()">
+
+                ← Previous
+
+            </button>
+
+
+            <button
+                class="next"
+                id="nextButton"
+                onclick="nextQuestion()">
+
+                Next →
+
+            </button>
+
+
+            <button
+                class="submit"
+                id="submitButton"
+                onclick="submitExam()"
+                style="display:none;">
+
+                Submit Exam ✓
+
+            </button>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= RESULT ================= -->
+
+<div
+    id="result"
+    class="result">
+
+    <h2>
+        🎉 Exam Completed!
+    </h2>
+
+    <div
+        id="score"
+        class="score">
+    </div>
+
+    <p
+        id="resultMessage"
+        class="result-message">
+    </p>
+
+</div>
+
+
+</div>
+
+
+<script>
+
+
+/* =====================================================
+   GOOGLE APPS SCRIPT
+   ===================================================== */
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbyRZJLJ12V-xxJa1mWMQvNLkhi20SNODf_Yu-lxdBiOpiRr4joPqZF-sRHcWnf2ox96fw/exec";
+
+
+/* =====================================================
+   STUDENT DATA
+   ===================================================== */
+
+const studentID =
+localStorage.getItem("studentID");
+
+const studentName =
+localStorage.getItem("studentName");
+
+const studentGrade =
+localStorage.getItem("studentGrade");
+
+
+/* =====================================================
+   CHECK LOGIN
+   ===================================================== */
+
+if (
+    !studentID ||
+    !studentName ||
+    !studentGrade
+) {
+
+    alert(
+        "Please login first."
+    );
+
+    window.location.href =
+        "index.html";
+}
+
+
+/* =====================================================
+   CHECK GRADE
+   ===================================================== */
+
+if (
+    String(studentGrade)
+    .trim()
+    .toLowerCase()
+    !==
+    "grade 9"
+) {
+
+    alert(
+        "This exam is only for Grade 9."
+    );
+
+    window.location.href =
+        "index.html";
+}
+
+
+/* =====================================================
+   SHOW STUDENT
+   ===================================================== */
+
+document
+.getElementById("studentName")
+.textContent =
+studentName;
+
+document
+.getElementById("studentGrade")
+.textContent =
+studentGrade;
+
+
+/* =====================================================
+   ⭐ GRADE 9 QUESTIONS ⭐
+   ===================================================== */
+
+const questions = [
+
+    {
+        question:
+        "Farida has learned English for five years. (since)",
+
+        answers: [
+            "Farida has learned English since she started learning English."
+        ]
+    },
+
+
+    {
+        question:
+        "I have done my homework. (My)",
+
+        answers: [
+            "My homework has been done."
+        ]
+    },
+
+
+    {
+        question:
+        "I have spoken English since 2010. (for)",
+
+        answers: [
+            "I have spoken English for ten years."
+        ]
+    },
+
+
+    {
+        question:
+        "Mariam has tidied the rooms. (been)",
+
+        answers: [
+            "Mariam has been tidying the rooms."
+        ]
+    },
+
+
+    {
+        question:
+        "I have studied English since 2015. (for)",
+
+        answers: [
+            "I have studied English for five years."
+        ]
+    },
+
+
+    {
+        question:
+        "I have already done my homework. (yet)",
+
+        answers: [
+            "I haven't done my homework yet.",
+            "I have not done my homework yet."
+        ]
+    },
+
+
+    {
+        question:
+        "The government has already opened the Great Egyptian Museum. (been)",
+
+        answers: [
+            "The Great Egyptian Museum has been opened by the government.",
+            "The Great Egyptian Museum has been opened by government."
+        ]
+    },
+
+
+    {
+        question:
+        "Mazen has lived in Qena since 2016. (for)",
+
+        answers: [
+            "Mazen has lived in Qena for four years."
+        ]
+    },
+
+
+    {
+        question:
+        "I have lived in Mansoura since 2021. (for)",
+
+        answers: [
+            "I have lived in Mansoura for three years."
+        ]
+    },
+
+
+    {
+        question:
+        "He has lived in Ismailia since 2020. (for)",
+
+        answers: [
+            "He has lived in Ismailia for five years."
+        ]
+    },
+
+
+    {
+        question:
+        "I have seen that movie already. (yet)",
+
+        answers: [
+            "I haven't seen that movie yet.",
+            "I have not seen that movie yet."
+        ]
+    },
+
+
+    {
+        question:
+        "Many tourists have visited the museum. (been)",
+
+        answers: [
+            "Many tourists have been to the museum."
+        ]
+    },
+
+
+    {
+        question:
+        "We are still doing our homework. (yet)",
+
+        answers: [
+            "We haven't finished our homework yet.",
+            "We have not finished our homework yet."
+        ]
+    },
+
+
+    {
+        question:
+        "I have lived in Sohag since 2000. (for)",
+
+        answers: [
+            "I have lived in Sohag for twenty years."
+        ]
+    }
+
+];
+
+
+/* =====================================================
+   EXAM VARIABLES
+   ===================================================== */
+
+let currentQuestion = 0;
+
+let studentAnswers =
+new Array(
+    questions.length
+).fill("");
+
+let examSubmitted = false;
+
+
+/* =====================================================
+   NORMALIZE ANSWER
+   Capital / Small don't matter
+   ===================================================== */
+
+function normalizeAnswer(text) {
+
+    return String(text)
+
+        .toLowerCase()
+
+        .replace(
+            /[.,!?;:"'“”‘’()]/g,
+            ""
+        )
+
+        .replace(
+            /\s+/g,
+            " "
+        )
+
+        .trim();
+}
+
+
+/* =====================================================
+   CHECK ANSWER
+   ===================================================== */
+
+function checkAnswer(
+    userAnswer,
+    correctAnswers
+) {
+
+    const user =
+        normalizeAnswer(
+            userAnswer
+        );
+
+
+    if (
+        user === ""
+    ) {
+
+        return false;
+
+    }
+
+
+    return correctAnswers.some(
+        function(correct) {
+
+            return (
+                normalizeAnswer(correct)
+                ===
+                user
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   SAVE CURRENT ANSWER
+   ===================================================== */
+
+function saveCurrentAnswer() {
+
+    const answerBox =
+        document.getElementById(
+            "answer"
+        );
+
+
+    studentAnswers[
+        currentQuestion
+    ] =
+        answerBox.value;
+
+}
+
+
+/* =====================================================
+   UPDATE ANSWERED
+   ===================================================== */
+
+function updateAnswered() {
+
+    const count =
+        studentAnswers.filter(
+            function(answer) {
+
+                return (
+                    answer.trim() !== ""
+                );
+
+            }
+        ).length;
+
+
+    document
+    .getElementById(
+        "answeredNumber"
+    )
+    .textContent =
+        "Answered: " +
+        count +
+        "/" +
+        questions.length;
+
+}
+
+
+/* =====================================================
+   DISPLAY QUESTION
+   ===================================================== */
+
+function displayQuestion() {
+
+    const current =
+        questions[
+            currentQuestion
+        ];
+
+
+    document
+    .getElementById(
+        "questionNumber"
+    )
+    .textContent =
+        "Question " +
+        (currentQuestion + 1) +
+        " of " +
+        questions.length;
+
+
+    document
+    .getElementById(
+        "questionNumberTop"
+    )
+    .textContent =
+        "Question " +
+        (currentQuestion + 1) +
+        " of " +
+        questions.length;
+
+
+    document
+    .getElementById(
+        "question"
+    )
+    .textContent =
+        current.question;
+
+
+    document
+    .getElementById(
+        "answer"
+    )
+    .value =
+        studentAnswers[
+            currentQuestion
+        ];
+
+
+    const progress =
+        (
+            (currentQuestion + 1)
+            /
+            questions.length
+        ) * 100;
+
+
+    document
+    .getElementById(
+        "progressBar"
+    )
+    .style.width =
+        progress + "%";
+
+
+    updateAnswered();
+
+
+    /* Previous */
+
+    if (
+        currentQuestion === 0
+    ) {
+
+        document
+        .getElementById(
+            "previousButton"
+        )
+        .style.display =
+            "none";
+
+    } else {
+
+        document
+        .getElementById(
+            "previousButton"
+        )
+        .style.display =
+            "block";
+
+    }
+
+
+    /* Next / Submit */
+
+    if (
+        currentQuestion ===
+        questions.length - 1
+    ) {
+
+        document
+        .getElementById(
+            "nextButton"
+        )
+        .style.display =
+            "none";
+
+
+        document
+        .getElementById(
+            "submitButton"
+        )
+        .style.display =
+            "block";
+
+    } else {
+
+        document
+        .getElementById(
+            "nextButton"
+        )
+        .style.display =
+            "block";
+
+
+        document
+        .getElementById(
+            "submitButton"
+        )
+        .style.display =
+            "none";
+
+    }
+
+}
+
+
+/* =====================================================
+   NEXT
+   ===================================================== */
+
+function nextQuestion() {
+
+    saveCurrentAnswer();
+
+
+    if (
+        currentQuestion <
+        questions.length - 1
+    ) {
+
+        currentQuestion++;
+
+        displayQuestion();
+
+    }
+
+}
+
+
+/* =====================================================
+   PREVIOUS
+   ===================================================== */
+
+function previousQuestion() {
+
+    saveCurrentAnswer();
+
+
+    if (
+        currentQuestion > 0
+    ) {
+
+        currentQuestion--;
+
+        displayQuestion();
+
+    }
+
+}
+
+
+/* =====================================================
+   TIMER
+   ===================================================== */
+
+let timeLeft =
+30 * 60;
+
+
+function updateTimer() {
+
+    const minutes =
+        Math.floor(
+            timeLeft / 60
+        );
+
+
+    const seconds =
+        timeLeft % 60;
+
+
+    document
+    .getElementById(
+        "timer"
+    )
+    .textContent =
+        String(minutes)
+        .padStart(2, "0")
+        +
+        ":" +
+        String(seconds)
+        .padStart(2, "0");
+
+
+    if (
+        timeLeft <= 0
+    ) {
+
+        clearInterval(timer);
+
+        submitExam(true);
+
+        return;
+
+    }
+
+
+    timeLeft--;
+
+}
+
+
+const timer =
+setInterval(
+    updateTimer,
+    1000
+);
+
+
+updateTimer();
+
+
+/* =====================================================
+   SUBMIT EXAM
+   ===================================================== */
+
+async function submitExam(
+    autoSubmit = false
+) {
+
+    if (
+        examSubmitted
+    ) {
+
+        return;
+
+    }
+
+
+    saveCurrentAnswer();
+
+
+    if (
+        !autoSubmit
+    ) {
+
+        const unanswered =
+            studentAnswers.filter(
+                function(answer) {
+
+                    return (
+                        answer.trim() === ""
+                    );
+
+                }
+            ).length;
+
+
+        if (
+            unanswered > 0
+        ) {
+
+            const confirmSubmit =
+                confirm(
+                    "You have " +
+                    unanswered +
+                    " unanswered question(s).\n\n" +
+                    "Do you want to submit anyway?"
+                );
+
+
+            if (
+                !confirmSubmit
+            ) {
+
+                return;
+
+            }
+
+        }
+
+
+        const finalConfirm =
+            confirm(
+                "Are you sure you want to submit your exam?"
+            );
+
+
+        if (
+            !finalConfirm
+        ) {
+
+            return;
+
+        }
+
+    }
+
+
+    examSubmitted = true;
+
+
+    clearInterval(timer);
+
+
+    /* ================= SCORE ================= */
+
+    let score = 0;
+
+
+    for (
+        let i = 0;
+        i < questions.length;
+        i++
+    ) {
+
+        if (
+            checkAnswer(
+                studentAnswers[i],
+                questions[i].answers
+            )
+        ) {
+
+            score++;
+
+        }
+
+    }
+
+
+    /* ================= SAVE RESULT ================= */
+
+    await saveResult(
+        score
+    );
+
+
+    /* ================= SHOW RESULT ================= */
+
+    showResult(
+        score
+    );
+
+}
+
+
+/* =====================================================
+   SAVE RESULT TO GOOGLE SHEETS
+   ===================================================== */
+
+async function saveResult(
+    score
+) {
+
+    const total =
+        questions.length;
+
+
+    const percentage =
+        total > 0
+        ?
+        Math.round(
+            (score / total) * 100
+        )
+        :
+        0;
+
+
+    try {
+
+        await fetch(
+            API_URL,
+            {
+
+                method: "POST",
+
+                body:
+                    JSON.stringify({
+
+                        studentID:
+                            studentID,
+
+                        studentName:
+                            studentName,
+
+                        grade:
+                            studentGrade,
+
+                        score:
+                            score,
+
+                        total:
+                            total,
+
+                        percentage:
+                            percentage
+
+                    })
+
+            }
+        );
+
+
+        console.log(
+            "Result saved successfully"
+        );
+
+    }
+
+    catch(error) {
+
+        console.error(
+            "Error saving result:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   SHOW RESULT
+   ===================================================== */
+
+function showResult(
+    score
+) {
+
+    const total =
+        questions.length;
+
+
+    const percentage =
+        total > 0
+        ?
+        Math.round(
+            (score / total) * 100
+        )
+        :
+        0;
+
+
+    document
+    .getElementById(
+        "examHeader"
+    )
+    .style.display =
+        "none";
+
+
+    document
+    .getElementById(
+        "exam"
+    )
+    .style.display =
+        "none";
+
+
+    document
+    .getElementById(
+        "result"
+    )
+    .style.display =
+        "block";
+
+
+    document
+    .getElementById(
+        "score"
+    )
+    .textContent =
+        score +
+        " / " +
+        total;
+
+
+    let message;
+
+
+    if (
+        percentage >= 90
+    ) {
+
+        message =
+            "Excellent! 🌟";
+
+    }
+
+    else if (
+        percentage >= 75
+    ) {
+
+        message =
+            "Very good! 👏";
+
+    }
+
+    else if (
+        percentage >= 50
+    ) {
+
+        message =
+            "Good effort! 👍";
+
+    }
+
+    else {
+
+        message =
+            "Keep practicing! 💪";
+
+    }
+
+
+    document
+    .getElementById(
+        "resultMessage"
+    )
+    .textContent =
+        message +
+        " Your percentage is " +
+        percentage +
+        "%.";
+
+}
+
+
+/* =====================================================
+   START
+   ===================================================== */
+
+displayQuestion();
+
+</script>
+
+</body>
+
+</html>
