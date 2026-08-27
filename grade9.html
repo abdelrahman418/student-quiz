@@ -4,6 +4,7 @@
 <head>
 
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Grade 9 English Exam</title>
@@ -37,15 +38,10 @@ body {
     margin: auto;
 }
 
-/* ================= HEADER ================= */
-
 .header {
     background: white;
-
     border-radius: 20px;
-
     padding: 25px;
-
     margin-bottom: 20px;
 
     box-shadow:
@@ -54,7 +50,6 @@ body {
 
 .title h1 {
     color: #0f172a;
-
     margin-bottom: 8px;
 }
 
@@ -64,13 +59,9 @@ body {
 
 .student {
     margin-top: 20px;
-
     background: #eff6ff;
-
     padding: 15px;
-
     border-radius: 12px;
-
     color: #1e3a8a;
 }
 
@@ -80,63 +71,41 @@ body {
 
 .timer {
     margin-top: 20px;
-
     background: #f1f5f9;
-
     padding: 12px;
-
     text-align: center;
-
     border-radius: 12px;
-
     font-size: 20px;
-
     font-weight: bold;
 }
 
 .progress-info {
     display: flex;
-
     justify-content: space-between;
-
     margin-top: 20px;
-
     color: #475569;
-
     font-size: 14px;
 }
 
 .progress {
     margin-top: 8px;
-
     width: 100%;
-
     height: 10px;
-
     background: #e2e8f0;
-
     border-radius: 20px;
-
     overflow: hidden;
 }
 
 .progress-bar {
     height: 100%;
-
     width: 0%;
-
     background: #2563eb;
-
     transition: width 0.3s;
 }
 
-/* ================= QUESTION ================= */
-
 .question-card {
     background: white;
-
     border-radius: 20px;
-
     padding: 30px;
 
     box-shadow:
@@ -145,65 +114,46 @@ body {
 
 .instruction {
     display: inline-block;
-
     background: #eff6ff;
-
     color: #2563eb;
-
     padding: 8px 12px;
-
     border-radius: 10px;
-
     font-weight: bold;
-
     margin-bottom: 20px;
 }
 
 .question-number {
     color: #2563eb;
-
     font-weight: bold;
-
     margin-bottom: 15px;
 }
 
 .question {
     font-size: 21px;
-
     line-height: 1.7;
-
     color: #0f172a;
-
     margin-bottom: 20px;
 }
 
 label {
     display: block;
-
     color: #475569;
-
     font-weight: bold;
-
     margin-bottom: 10px;
 }
 
 textarea {
     width: 100%;
-
     min-height: 130px;
-
     padding: 15px;
 
     border: 2px solid #e2e8f0;
-
     border-radius: 12px;
 
     font-size: 17px;
-
     font-family: Arial;
 
     resize: vertical;
-
     outline: none;
 }
 
@@ -211,27 +161,19 @@ textarea:focus {
     border-color: #2563eb;
 }
 
-/* ================= BUTTONS ================= */
-
 .buttons {
     display: flex;
-
     gap: 10px;
-
     margin-top: 20px;
 }
 
 button {
     flex: 1;
-
     padding: 15px;
-
     border: none;
-
     border-radius: 12px;
 
     font-size: 16px;
-
     font-weight: bold;
 
     cursor: pointer;
@@ -243,33 +185,24 @@ button:hover {
 
 .previous {
     background: #e2e8f0;
-
     color: #334155;
 }
 
 .next {
     background: #2563eb;
-
     color: white;
 }
 
 .submit {
     background: #16a34a;
-
     color: white;
 }
 
-/* ================= RESULT ================= */
-
 .result {
     display: none;
-
     background: white;
-
     padding: 40px;
-
     border-radius: 20px;
-
     text-align: center;
 
     box-shadow:
@@ -282,21 +215,15 @@ button:hover {
 
 .score {
     font-size: 45px;
-
     font-weight: bold;
-
     color: #2563eb;
-
     margin: 20px;
 }
 
 .result-message {
     color: #64748b;
-
     font-size: 18px;
 }
-
-/* ================= MOBILE ================= */
 
 @media(max-width:600px) {
 
@@ -355,6 +282,7 @@ button:hover {
     <div class="timer">
 
         ⏱️ Time Left:
+
         <span id="timer">
             30:00
         </span>
@@ -472,10 +400,12 @@ button:hover {
         🎉 Exam Completed!
     </h2>
 
+
     <div
         id="score"
         class="score">
     </div>
+
 
     <p
         id="resultMessage"
@@ -489,7 +419,6 @@ button:hover {
 
 
 <script>
-
 
 /* =====================================================
    GOOGLE APPS SCRIPT
@@ -569,7 +498,7 @@ studentGrade;
 
 
 /* =====================================================
-   ⭐ GRADE 9 QUESTIONS ⭐
+   GRADE 9 QUESTIONS
    ===================================================== */
 
 const questions = [
@@ -736,7 +665,6 @@ let examSubmitted = false;
 
 /* =====================================================
    NORMALIZE ANSWER
-   Capital / Small don't matter
    ===================================================== */
 
 function normalizeAnswer(text) {
@@ -756,6 +684,7 @@ function normalizeAnswer(text) {
         )
 
         .trim();
+
 }
 
 
@@ -1220,7 +1149,7 @@ async function submitExam(
 
 
 /* =====================================================
-   SAVE RESULT TO GOOGLE SHEETS
+   SAVE RESULT + STUDENT ANSWERS
    ===================================================== */
 
 async function saveResult(
@@ -1239,6 +1168,50 @@ async function saveResult(
         )
         :
         0;
+
+
+    /* Build complete answer report */
+
+    const answers =
+        questions.map(
+            function(question, index) {
+
+                const studentAnswer =
+                    studentAnswers[index] || "";
+
+
+                const isCorrect =
+                    checkAnswer(
+                        studentAnswer,
+                        question.answers
+                    );
+
+
+                return {
+
+                    questionNumber:
+                        index + 1,
+
+                    question:
+                        question.question,
+
+                    studentAnswer:
+                        studentAnswer,
+
+                    correctAnswer:
+                        question.answers.join(
+                            " / "
+                        ),
+
+                    result:
+                        isCorrect
+                        ? "Correct"
+                        : "Wrong"
+
+                };
+
+            }
+        );
 
 
     try {
@@ -1268,7 +1241,10 @@ async function saveResult(
                             total,
 
                         percentage:
-                            percentage
+                            percentage,
+
+                        answers:
+                            answers
 
                     })
 
@@ -1277,8 +1253,9 @@ async function saveResult(
 
 
         console.log(
-            "Result saved successfully"
+            "Result and answers saved successfully"
         );
+
 
     }
 
