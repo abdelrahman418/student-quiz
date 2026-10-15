@@ -1,0 +1,142 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Available Exams</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:24px;font-family:Arial,sans-serif;background:#eff6ff;color:#0f172a}
+main{max-width:850px;margin:auto}
+header,.card{background:white;padding:24px;border-radius:18px;margin-bottom:18px;box-shadow:0 8px 30px #0f172a10}
+.card h2{margin-top:0}
+button{background:#2563eb;color:white;border:0;border-radius:10px;padding:12px 18px;font-weight:bold;cursor:pointer}
+button:disabled{background:#94a3b8;cursor:not-allowed}
+.muted{color:#64748b;line-height:1.6}
+.status{background:#eff6ff;padding:12px;border-radius:10px;white-space:pre-wrap}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <h1>🎓 Available Exams</h1>
+  <p id="studentInfo" class="muted">Loading student information...</p>
+  <button onclick="location.href='index.html'">Log out</button>
+</header>
+<section id="examList"></section>
+<p id="status" class="status" aria-live="polite"></p>
+</main>
+<script>
+const API_URL = "https://script.google.com/macros/s/AKfycbyRZJLJ12V-xxJa1mWMQvNLkhi20SNODf_Yu-lxdBiOpiRr4joPqZF-sRHcWnf2ox96fw/exec";
+const studentID = localStorage.getItem("studentID");
+const studentName = localStorage.getItem("studentName");
+const studentGrade = localStorage.getItem("studentGrade");
+
+function message(text) {
+  document.getElementById("status").textContent = text;
+}
+
+async function getJSON(url) {
+  const response = await fetch(url);
+  return await response.json();
+}
+
+async function loadExams() {
+  if (!studentID || !studentName || !studentGrade) {
+    alert("Please login first.");
+    location.href = "index.html";
+    return;
+  }
+
+  document.getElementById("studentInfo").textContent =
+    studentName + " | " + studentGrade;
+
+  message("Loading exams...");
+  try {
+    const result = await getJSON(
+      API_URL + "?action=listExams&id=" + encodeURIComponent(studentID)
+    );
+    if (!result.success) throw new Error(result.message || "Could not load exams.");
+
+    const container = document.getElementById("examList");
+    container.replaceChildren();
+
+    if (!result.exams.length) {
+      message("There are no published exams for your grade yet.");
+      return;
+    }
+
+    for (const exam of result.exams) {
+      const card = document.createElement("article");
+      card.className = "card";
+
+      const title = document.createElement("h2");
+      title.textContent = exam.title;
+      card.appendChild(title);
+
+      const details = document.createElement("p");
+      details.className = "muted";
+      details.textContent = exam.grade + " · " + exam.durationMinutes + " minutes";
+      card.appendChild(details);
+
+      const button = document.createElement("button");
+      button.textContent = "Start / Resume";
+      button.onclick = () => startExam(exam.examId);
+      card.appendChild(button);
+
+      const status = document.createElement("p");
+      status.className = "muted";
+      status.textContent = "Checking attempt status...";
+      card.appendChild(status);
+
+      try {
+        const attempt = await getJSON(
+          API_URL + "?action=resume&id=" + encodeURIComponent(studentID) +
+          "&examId=" + encodeURIComponent(exam.examId)
+        );
+
+        if (attempt.success && attempt.completed) {
+          button.disabled = true;
+          button.textContent = "Already submitted";
+          status.textContent = "This exam attempt is closed.";
+        } else if (attempt.success && attempt.hasAttempt) {
+          status.textContent = "An unfinished attempt was found. You can resume it.";
+        } else {
+          status.textContent = "Not started yet.";
+        }
+      } catch (error) {
+        status.textContent = "Could not check previous attempt.";
+      }
+
+      container.appendChild(card);
+    }
+    message("");
+  } catch (error) {
+    message("Error loading exams: " + error.message);
+  }
+}
+
+async function startExam(examId) {
+  message("Opening exam...");
+  try {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: {"Content-Type": "text/plain;charset=utf-8"},
+      body: JSON.stringify({action:"startOrResume", studentId:studentID, examId})
+    });
+    const result = await response.json();
+    if (!result.success) throw new Error(result.message || "Unable to open exam.");
+
+    sessionStorage.setItem("currentExamId", examId);
+    sessionStorage.setItem("currentAttemptId", result.attemptId);
+    location.href = "exam.html";
+  } catch (error) {
+    message("Unable to start exam: " + error.message);
+  }
+}
+
+loadExams();
+</script>
+</body>
+</html>
