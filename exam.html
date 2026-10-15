@@ -1,0 +1,283 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>English Exam</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:20px;font-family:Arial,sans-serif;background:linear-gradient(135deg,#0f172a,#1d4ed8);color:#0f172a}
+main{max-width:900px;margin:auto}
+header,.panel{background:white;border-radius:18px;padding:24px;margin-bottom:18px;box-shadow:0 12px 35px #0002}
+.top{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.info{background:#eff6ff;border-radius:12px;padding:12px}
+#timer{font-size:23px;font-weight:bold;text-align:center;background:#f1f5f9;padding:14px;border-radius:12px;margin-top:18px}
+#progress{height:9px;background:#e2e8f0;border-radius:9px;overflow:hidden;margin-top:14px}
+#bar{height:100%;width:0;background:#2563eb}
+.question{font-size:22px;line-height:1.6;margin:18px 0}
+textarea{width:100%;min-height:120px;padding:14px;border:2px solid #cbd5e1;border-radius:12px;font:17px Arial;resize:vertical}
+textarea:focus{outline:none;border-color:#2563eb}
+.buttons{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+button{border:0;border-radius:10px;padding:13px 18px;font-weight:bold;font-size:15px;cursor:pointer}
+.primary{background:#2563eb;color:white}
+.gray{background:#e2e8f0;color:#1e293b}
+.green{background:#15803d;color:white}
+button:disabled{opacity:.5;cursor:not-allowed}
+.muted{color:#64748b;line-height:1.6}
+.status{padding:12px;background:#eff6ff;border-radius:10px;white-space:pre-wrap;margin-top:12px}
+.hidden{display:none}
+@media(max-width:600px){header,.panel{padding:18px}.question{font-size:19px}}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <div class="top">
+    <div>
+      <h1 id="title">English Exam</h1>
+      <p id="studentInfo" class="muted"></p>
+    </div>
+    <div class="info">
+      <strong id="progressText">Question 1</strong>
+      <p id="answeredText" class="muted">Answered: 0</p>
+    </div>
+  </div>
+  <div id="timer">Loading timer...</div>
+  <div id="progress"><div id="bar"></div></div>
+</header>
+
+<section id="examPanel" class="panel">
+  <p id="number" class="muted"></p>
+  <div id="question" class="question"></div>
+  <label for="answer"><strong>Your answer:</strong></label>
+  <textarea id="answer" placeholder="Write your complete answer here..."></textarea>
+  <div class="buttons">
+    <button id="previous" class="gray">← Previous</button>
+    <button id="next" class="primary">Next →</button>
+    <button id="submit" class="green hidden">Submit Exam</button>
+  </div>
+  <p id="saveStatus" class="status">Preparing exam...</p>
+</section>
+
+<section id="result" class="panel hidden">
+  <h2>Exam submitted</h2>
+  <p id="resultText"></p>
+  <button class="primary" onclick="location.href='student-exams.html'">Back to exams</button>
+</section>
+</main>
+
+<script>
+const API_URL = "https://script.google.com/macros/s/AKfycbyRZJLJ12V-xxJa1mWMQvNLkhi20SNODf_Yu-lxdBiOpiRr4joPqZF-sRHcWnf2ox96fw/exec";
+const studentID = localStorage.getItem("studentID");
+const studentName = localStorage.getItem("studentName");
+const studentGrade = localStorage.getItem("studentGrade");
+const examId = sessionStorage.getItem("currentExamId");
+const attemptId = sessionStorage.getItem("currentAttemptId");
+
+let questions = [];
+let answers = {};
+let current = 0;
+let deadline = 0;
+let timerHandle = null;
+let saveHandle = null;
+let busy = false;
+let finished = false;
+
+const $ = id => document.getElementById(id);
+
+function status(text) {
+  $("saveStatus").textContent = text;
+}
+
+async function post(data) {
+  const response = await fetch(API_URL, {
+    method: "POST",
+    headers: {"Content-Type":"text/plain;charset=utf-8"},
+    body: JSON.stringify(data)
+  });
+  return response.json();
+}
+
+async function getJSON(url) {
+  const response = await fetch(url);
+  return response.json();
+}
+
+async function initialize() {
+  if (!studentID || !studentName || !studentGrade || !examId || !attemptId) {
+    alert("Please log in and select an exam.");
+    location.href = "index.html";
+    return;
+  }
+
+  $("studentInfo").textContent = studentName + " | " + studentGrade;
+
+  try {
+    const result = await getJSON(
+      API_URL + "?action=getQuestions&id=" + encodeURIComponent(studentID) +
+      "&examId=" + encodeURIComponent(examId)
+    );
+    if (!result.success) throw new Error(result.message || "Could not load questions.");
+
+    questions = result.questions;
+    $("title").textContent = result.title;
+    if (!questions.length) throw new Error("This exam has no questions.");
+
+    const resumed = await getJSON(
+      API_URL + "?action=resume&id=" + encodeURIComponent(studentID) +
+      "&examId=" + encodeURIComponent(examId)
+    );
+    if (!resumed.success) throw new Error(resumed.message || "Could not restore attempt.");
+
+    if (resumed.completed) {
+      showClosed();
+      return;
+    }
+
+    // Use server-saved answers and deadline.
+    answers = resumed.answers || {};
+    deadline = new Date(resumed.deadline).getTime();
+
+    $("answer").addEventListener("input", () => {
+      if (finished) return;
+      answers[String(current + 1)] = $("answer").value;
+      updateProgress();
+      status("Answer changed. Saving...");
+      clearTimeout(saveHandle);
+      saveHandle = setTimeout(saveAnswers, 500);
+    });
+
+    $("previous").onclick = () => move(-1);
+    $("next").onclick = () => move(1);
+    $("submit").onclick = () => submitExam(false);
+
+    displayQuestion();
+    updateProgress();
+    timerHandle = setInterval(updateTimer, 500);
+    updateTimer();
+    status("Your answers are saved automatically.");
+  } catch (error) {
+    status("Error: " + error.message);
+  }
+}
+
+function displayQuestion() {
+  const q = questions[current];
+  $("number").textContent = "Question " + (current + 1) + " of " + questions.length;
+  $("progressText").textContent = "Question " + (current + 1);
+  $("question").textContent = q.question;
+  $("answer").value = answers[String(current + 1)] || "";
+  $("previous").disabled = current === 0;
+  $("next").classList.toggle("hidden", current === questions.length - 1);
+  $("submit").classList.toggle("hidden", current !== questions.length - 1);
+  $("bar").style.width = ((current + 1) / questions.length * 100) + "%";
+  updateProgress();
+}
+
+function move(direction) {
+  if (finished) return;
+  answers[String(current + 1)] = $("answer").value;
+  const next = current + direction;
+  if (next < 0 || next >= questions.length) return;
+  current = next;
+  displayQuestion();
+  saveAnswers();
+}
+
+function updateProgress() {
+  const count = questions.filter((q, i) =>
+    String(answers[String(i + 1)] || "").trim() !== ""
+  ).length;
+  $("answeredText").textContent = "Answered: " + count + "/" + questions.length;
+}
+
+async function saveAnswers() {
+  if (finished || busy) return;
+  busy = true;
+  try {
+    const result = await post({
+      action: "saveAnswers",
+      studentId: studentID,
+      attemptId,
+      answers
+    });
+    if (!result.success) {
+      status(result.message || "Could not save answers.");
+    } else {
+      status("All answers saved.");
+    }
+  } catch (error) {
+    status("Save error. Check your internet connection and try again.");
+  } finally {
+    busy = false;
+  }
+}
+
+function updateTimer() {
+  if (!deadline || finished) return;
+  const remaining = Math.max(0, Math.floor((deadline - Date.now()) / 1000));
+  const minutes = String(Math.floor(remaining / 60)).padStart(2, "0");
+  const seconds = String(remaining % 60).padStart(2, "0");
+  $("timer").textContent = minutes + ":" + seconds;
+
+  if (remaining <= 0) {
+    clearInterval(timerHandle);
+    submitExam(true);
+  }
+}
+
+async function submitExam(auto) {
+  if (finished || busy) return;
+  answers[String(current + 1)] = $("answer").value;
+
+  const unanswered = questions.filter((q, i) =>
+    String(answers[String(i + 1)] || "").trim() === ""
+  ).length;
+
+  if (!auto) {
+    if (unanswered && !confirm(
+      "You have " + unanswered + " unanswered question(s). Submit anyway?"
+    )) return;
+    if (!confirm("Are you sure you want to submit this exam?")) return;
+  }
+
+  busy = true;
+  status("Submitting exam...");
+  try {
+    const result = await post({
+      action: "submitExam",
+      studentId: studentID,
+      attemptId,
+      answers
+    });
+    if (!result.success) throw new Error(result.message || "Submission failed.");
+
+    finished = true;
+    clearInterval(timerHandle);
+    clearTimeout(saveHandle);
+    $("examPanel").classList.add("hidden");
+    $("result").classList.remove("hidden");
+    $("resultText").textContent =
+      "Score: " + result.score + " / " + result.total +
+      " (" + result.percentage + "%)";
+  } catch (error) {
+    status("Submission failed: " + error.message +
+      ". Do not close this page; check your connection and try again.");
+  } finally {
+    busy = false;
+  }
+}
+
+function showClosed() {
+  finished = true;
+  $("examPanel").classList.add("hidden");
+  $("result").classList.remove("hidden");
+  $("resultText").textContent =
+    "This exam has already been submitted or its attempt has expired. You cannot retake it.";
+}
+
+initialize();
+</script>
+</body>
+</html>
