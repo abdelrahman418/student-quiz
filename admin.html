@@ -5,49 +5,97 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Student Quiz | Admin</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;padding:20px;font-family:Arial,sans-serif;background:#eef4ff;color:#172554}
-main{max-width:900px;margin:auto}
-.card{background:white;border-radius:18px;padding:24px;margin-bottom:18px;box-shadow:0 8px 30px #17255412}
+body{
+  margin:0;padding:20px;
+  font-family:Arial,sans-serif;
+  background:#eef4ff;color:#172554
+}
+main{max-width:950px;margin:auto}
+.card{
+  background:white;border-radius:18px;
+  padding:24px;margin-bottom:20px;
+  box-shadow:0 8px 30px #17255412
+}
 h1,h2{margin-top:0}
 label{display:block;font-weight:bold;margin:14px 0 7px}
-input,select,textarea{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:10px;font:inherit}
-textarea{min-height:90px;resize:vertical}
-button{border:0;border-radius:10px;padding:12px 17px;font:inherit;font-weight:bold;cursor:pointer;margin:5px 3px}
+input,select,textarea{
+  width:100%;padding:12px;
+  border:1px solid #cbd5e1;border-radius:10px;
+  font:inherit;background:white;color:#172554
+}
+textarea{min-height:85px;resize:vertical}
+button{
+  border:0;border-radius:10px;padding:12px 17px;
+  font:inherit;font-weight:bold;cursor:pointer;margin:5px 3px
+}
+button:disabled{opacity:.6;cursor:not-allowed}
 .primary{background:#2563eb;color:white}
 .green{background:#15803d;color:white}
 .gray{background:#e2e8f0;color:#1e293b}
 .danger{background:#fee2e2;color:#991b1b}
-.question{border:1px solid #dbeafe;padding:16px;border-radius:14px;margin:14px 0}
-.status{padding:12px;background:#eff6ff;border-radius:10px;white-space:pre-wrap;overflow-wrap:anywhere}
-.small{color:#64748b;font-size:14px;line-height:1.6}
-.hidden{display:none}
-.row{display:grid;grid-template-columns:1fr 150px;gap:12px}
-@media(max-width:600px){.row{grid-template-columns:1fr}.card{padding:17px}}
+.question{
+  border:1px solid #dbeafe;padding:18px;
+  border-radius:14px;margin:16px 0;background:#fbfdff
+}
+.status{
+  padding:12px;background:#eff6ff;
+  border-radius:10px;white-space:pre-wrap;
+  overflow-wrap:anywhere;line-height:1.7
+}
+.small{color:#64748b;font-size:14px;line-height:1.7}
+.hidden{display:none!important}
+.row{display:grid;grid-template-columns:1fr 180px;gap:12px}
+.option-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
+@media(max-width:600px){
+  .row{grid-template-columns:1fr}
+  .card{padding:16px}
+}
 </style>
 </head>
+
 <body>
 <main>
-  <div class="card">
+
+  <section class="card">
     <h1>🔐 لوحة إدارة الامتحانات</h1>
-    <p class="small">سجّل الدخول باستخدام رمز الإدارة الذي حفظته في Script Properties باسم ADMIN_PIN.</p>
-    <label for="pin">رمز الإدارة</label>
-    <input id="pin" type="password" autocomplete="current-password" placeholder="أدخل رمز الإدارة">
-    <button class="primary" onclick="loginAdmin()">تسجيل الدخول</button>
+    <p class="small">
+      سجّل الدخول باستخدام رقم المسؤول وكلمة المرور المحفوظين
+      في خصائص النص البرمجي.
+    </p>
+
+    <label for="adminId">رقم المسؤول Admin ID</label>
+    <input id="adminId" value="ADMIN-001" autocomplete="username"
+           placeholder="ADMIN-001">
+
+    <label for="password">كلمة المرور</label>
+    <input id="password" type="password"
+           autocomplete="current-password"
+           placeholder="أدخل كلمة المرور">
+
+    <button id="loginButton" class="primary" onclick="loginAdmin()">
+      تسجيل الدخول
+    </button>
     <button class="gray" onclick="logoutAdmin()">تسجيل الخروج</button>
-    <div id="loginStatus" class="status" aria-live="polite">لم يتم تسجيل الدخول بعد.</div>
-  </div>
+
+    <div id="loginStatus" class="status" aria-live="polite">
+      لم يتم تسجيل الدخول بعد.
+    </div>
+  </section>
 
   <section id="builder" class="hidden">
+
     <div class="card">
       <h2>📝 إنشاء امتحان جديد</h2>
+
       <label for="title">عنوان الامتحان</label>
       <input id="title" value="English Exam 1">
 
       <div class="row">
         <div>
-          <label for="grade">الصف</label>
+          <label for="grade">الصف الدراسي</label>
           <select id="grade">
             <option>Grade 5</option>
             <option>Grade 6</option>
@@ -56,87 +104,152 @@ button{border:0;border-radius:10px;padding:12px 17px;font:inherit;font-weight:bo
             <option>Grade 9</option>
           </select>
         </div>
+
         <div>
-          <label for="duration">المدة بالدقائق</label>
+          <label for="duration">مدة الامتحان بالدقائق</label>
           <input id="duration" type="number" min="1" max="300" value="30">
         </div>
       </div>
 
       <p class="small">
-        لكل سؤال اكتب الإجابة النموذجية. لو توجد أكثر من إجابة مقبولة،
-        ضع كل إجابة في سطر منفصل. لا تكتب الإجابة الصحيحة في نص السؤال.
+        اكتب السؤال، ثم أضف الاختيارات، وحدد الإجابة الصحيحة
+        من بينها. يمكنك إضافة درجات مختلفة لكل سؤال.
       </p>
 
       <div id="questions"></div>
 
-      <button class="primary" onclick="addQuestion()">＋ إضافة سؤال</button>
-      <button class="green" onclick="createExam()">حفظ الامتحان كمسودة</button>
-      <button class="gray" onclick="clearQuestions()">مسح الأسئلة</button>
+      <button class="primary" onclick="addQuestion()">
+        ＋ إضافة سؤال
+      </button>
+      <button id="createButton" class="green" onclick="createExam()">
+        حفظ الامتحان كمسودة
+      </button>
+      <button class="gray" onclick="clearQuestions()">
+        مسح الأسئلة
+      </button>
 
       <label>حالة العملية</label>
-      <div id="examStatus" class="status" aria-live="polite">أضف سؤالًا واحدًا على الأقل.</div>
+      <div id="examStatus" class="status" aria-live="polite">
+        أضف سؤالًا واحدًا على الأقل.
+      </div>
+
       <div id="publishArea" class="hidden">
         <p id="examIdText"></p>
-        <button class="green" onclick="publishExam()">نشر الامتحان للطلاب</button>
+        <button id="publishButton" class="green" onclick="publishExam()">
+          نشر الامتحان للطلاب
+        </button>
       </div>
     </div>
+
   </section>
 </main>
 
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbyRZJLJ12V-xxJa1mWMQvNLkhi20SNODf_Yu-lxdBiOpiRr4joPqZF-sRHcWnf2ox96fw/exec";
+/*
+  مهم:
+  استخدم رابط Web App الحالي من:
+  Apps Script > نشر > إدارة عمليات النشر.
+  يجب أن ينتهي الرابط بـ /exec.
+*/
+const API_URL =
+"https://script.google.com/macros/s/AKfycbyRZJLJ12V-xxJa1mWMQvNLkhi20SNODf_Yu-lxdBiOpiRr4joPqZF-sRHcWnf2ox96fw/exec";
 
 let adminToken = "";
 let createdExamId = "";
+let busy = false;
 
 async function apiPost(data) {
   const response = await fetch(API_URL, {
     method: "POST",
-    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    headers: {
+      "Content-Type": "text/plain;charset=utf-8"
+    },
     body: JSON.stringify(data)
   });
+
+  if (!response.ok) {
+    throw new Error("استجابة الخادم غير ناجحة: " + response.status);
+  }
+
   return await response.json();
 }
 
 function show(id, message) {
-  document.getElementById(id).textContent = message;
+  document.getElementById(id).textContent = message || "";
+}
+
+function setBusy(value) {
+  busy = value;
+  document.getElementById("loginButton").disabled = value;
+  document.getElementById("createButton").disabled = value;
+  document.getElementById("publishButton").disabled = value;
 }
 
 async function loginAdmin() {
-  show("loginStatus", "جارٍ التحقق...");
+  if (busy) return;
+
+  const adminId = document.getElementById("adminId").value.trim();
+  const password = document.getElementById("password").value;
+
+  if (!adminId || !password) {
+    show("loginStatus", "أدخل رقم المسؤول وكلمة المرور.");
+    return;
+  }
+
+  setBusy(true);
+  show("loginStatus", "جارٍ التحقق من بيانات المسؤول...");
+
   try {
     const result = await apiPost({
       action: "adminLogin",
-      pin: document.getElementById("pin").value
+      adminId: adminId,
+      password: password
     });
-    if (!result.success) throw new Error(result.message || "فشل تسجيل الدخول.");
+
+    if (!result.success) {
+      throw new Error(result.message || "فشل تسجيل الدخول.");
+    }
+
+    if (!result.token) {
+      throw new Error("لم يستلم الموقع رمز جلسة الإدارة.");
+    }
+
     adminToken = result.token;
     sessionStorage.setItem("quizAdminToken", adminToken);
+
     document.getElementById("builder").classList.remove("hidden");
-    show("loginStatus", "تم تسجيل الدخول بنجاح.");
-    document.getElementById("pin").value = "";
+    document.getElementById("password").value = "";
+
+    show("loginStatus", "تم تسجيل الدخول بنجاح. يمكنك إنشاء الامتحانات.");
+
     if (!document.querySelector(".question")) addQuestion();
+
   } catch (error) {
-    show("loginStatus", "تعذّر تسجيل الدخول: " + error.message +
-      "\nتحقق من نشر Apps Script وصلاحية الوصول.");
+    show("loginStatus",
+      "تعذّر تسجيل الدخول:\n" + error.message +
+      "\n\nتحقق من رابط Apps Script وإعدادات المسؤول.");
+  } finally {
+    setBusy(false);
   }
 }
 
 function logoutAdmin() {
   adminToken = "";
+  createdExamId = "";
   sessionStorage.removeItem("quizAdminToken");
+
   document.getElementById("builder").classList.add("hidden");
+  document.getElementById("publishArea").classList.add("hidden");
   show("loginStatus", "تم تسجيل الخروج من هذه الصفحة.");
 }
 
 function addQuestion(questionText = "", answerText = "", points = 1) {
   const container = document.getElementById("questions");
-  const number = container.children.length + 1;
   const box = document.createElement("div");
   box.className = "question";
 
   const heading = document.createElement("h3");
-  heading.textContent = "السؤال " + number;
+  heading.textContent = "السؤال " + (container.children.length + 1);
   box.appendChild(heading);
 
   const qLabel = document.createElement("label");
@@ -145,119 +258,290 @@ function addQuestion(questionText = "", answerText = "", points = 1) {
 
   const qInput = document.createElement("textarea");
   qInput.className = "qtext";
-  qInput.placeholder = "مثال: He plays football. (yesterday)";
+  qInput.placeholder = "اكتب نص السؤال هنا...";
   qInput.value = questionText;
   box.appendChild(qInput);
 
-  const aLabel = document.createElement("label");
-  aLabel.textContent = "الإجابة النموذجية";
-  box.appendChild(aLabel);
+  const optionsLabel = document.createElement("label");
+  optionsLabel.textContent = "الاختيارات";
+  box.appendChild(optionsLabel);
 
-  const aInput = document.createElement("textarea");
-  aInput.className = "atext";
-  aInput.placeholder = "اكتب الإجابة الصحيحة هنا...";
-  aInput.value = answerText;
-  box.appendChild(aInput);
+  const optionsContainer = document.createElement("div");
+  optionsContainer.className = "options";
+  box.appendChild(optionsContainer);
 
-  const pLabel = document.createElement("label");
-  pLabel.textContent = "درجة السؤال";
-  box.appendChild(pLabel);
+  for (let i = 0; i < 4; i++) {
+    addOption(optionsContainer);
+  }
 
-  const pInput = document.createElement("input");
-  pInput.className = "points";
-  pInput.type = "number";
-  pInput.min = "0.5";
-  pInput.step = "0.5";
-  pInput.value = points;
-  box.appendChild(pInput);
+  const answerLabel = document.createElement("label");
+  answerLabel.textContent = "الإجابة الصحيحة";
+  box.appendChild(answerLabel);
+
+  const answerSelect = document.createElement("select");
+  answerSelect.className = "correctAnswer";
+
+  const placeholder = document.createElement("option");
+  placeholder.value = "";
+  placeholder.textContent = "اختر الإجابة الصحيحة";
+  answerSelect.appendChild(placeholder);
+
+  box.appendChild(answerSelect);
+
+  const pointsLabel = document.createElement("label");
+  pointsLabel.textContent = "درجة السؤال";
+  box.appendChild(pointsLabel);
+
+  const pointsInput = document.createElement("input");
+  pointsInput.className = "points";
+  pointsInput.type = "number";
+  pointsInput.min = "0.5";
+  pointsInput.step = "0.5";
+  pointsInput.value = points;
+  box.appendChild(pointsInput);
+
+  const addOptionButton = document.createElement("button");
+  addOptionButton.type = "button";
+  addOptionButton.className = "gray";
+  addOptionButton.textContent = "＋ إضافة اختيار";
+  addOptionButton.onclick = () => addOption(optionsContainer);
+  box.appendChild(addOptionButton);
+
+  const removeButton = document.createElement("button");
+  removeButton.type = "button";
+  removeButton.className = "danger";
+  removeButton.textContent = "حذف السؤال";
+  removeButton.onclick = () => {
+    box.remove();
+    renumberQuestions();
+  };
+  box.appendChild(removeButton);
+
+  container.appendChild(box);
+  renumberQuestions();
+  refreshAnswerChoices(box);
+
+  if (answerText) {
+    const match = [...optionsContainer.querySelectorAll(".optionText")]
+      .find(input => input.value.trim() === answerText.trim());
+    if (match) answerSelect.value = answerText.trim();
+  }
+}
+
+function addOption(container) {
+  const row = document.createElement("div");
+  row.className = "option-row";
+
+  const input = document.createElement("input");
+  input.className = "optionText";
+  input.placeholder = "اكتب الاختيار";
+  input.addEventListener("input", () => {
+    refreshAnswerChoices(container.closest(".question"));
+  });
 
   const remove = document.createElement("button");
   remove.type = "button";
   remove.className = "danger";
-  remove.textContent = "حذف هذا السؤال";
+  remove.textContent = "حذف";
   remove.onclick = () => {
-    box.remove();
-    renumberQuestions();
+    row.remove();
+    refreshAnswerChoices(container.closest(".question"));
   };
-  box.appendChild(remove);
-  container.appendChild(box);
-  renumberQuestions();
+
+  row.append(input, remove);
+  container.appendChild(row);
+  refreshAnswerChoices(container.closest(".question"));
+}
+
+function refreshAnswerChoices(box) {
+  if (!box) return;
+
+  const select = box.querySelector(".correctAnswer");
+  const previous = select.value;
+  const options = [...box.querySelectorAll(".optionText")]
+    .map(input => input.value.trim())
+    .filter(Boolean);
+
+  select.replaceChildren();
+
+  const placeholder = document.createElement("option");
+  placeholder.value = "";
+  placeholder.textContent = "اختر الإجابة الصحيحة";
+  select.appendChild(placeholder);
+
+  [...new Set(options)].forEach(option => {
+    const item = document.createElement("option");
+    item.value = option;
+    item.textContent = option;
+    select.appendChild(item);
+  });
+
+  if (options.includes(previous)) select.value = previous;
 }
 
 function renumberQuestions() {
-  [...document.querySelectorAll(".question h3")].forEach((heading, i) => {
-    heading.textContent = "السؤال " + (i + 1);
+  document.querySelectorAll(".question h3").forEach((heading, index) => {
+    heading.textContent = "السؤال " + (index + 1);
   });
 }
 
 function clearQuestions() {
   if (!confirm("هل تريد مسح جميع الأسئلة التي أدخلتها؟")) return;
+
   document.getElementById("questions").replaceChildren();
   addQuestion();
+  createdExamId = "";
+  document.getElementById("publishArea").classList.add("hidden");
+  show("examStatus", "أضف الأسئلة من جديد.");
+}
+
+function collectQuestions() {
+  return [...document.querySelectorAll(".question")].map((box, index) => {
+    const question = box.querySelector(".qtext").value.trim();
+
+    const options = [...box.querySelectorAll(".optionText")]
+      .map(input => input.value.trim())
+      .filter(Boolean);
+
+    const correctAnswer = box.querySelector(".correctAnswer").value.trim();
+    const points = Number(box.querySelector(".points").value);
+
+    if (!question) throw new Error("اكتب نص السؤال رقم " + (index + 1) + ".");
+    if (options.length < 2) {
+      throw new Error("أضف اختيارين على الأقل للسؤال " + (index + 1) + ".");
+    }
+
+    const normalized = options.map(x => x.toLowerCase().replace(/\s+/g, " ").trim());
+    if (new Set(normalized).size !== options.length) {
+      throw new Error("توجد اختيارات مكررة في السؤال " + (index + 1) + ".");
+    }
+
+    if (!correctAnswer || !options.includes(correctAnswer)) {
+      throw new Error("حدد الإجابة الصحيحة للسؤال " + (index + 1) + ".");
+    }
+
+    if (!Number.isFinite(points) || points <= 0) {
+      throw new Error("درجة السؤال " + (index + 1) + " غير صحيحة.");
+    }
+
+    return {
+      question: question,
+      options: options,
+      correctAnswer: correctAnswer,
+      points: points
+    };
+  });
 }
 
 async function createExam() {
+  if (busy) return;
+
   if (!adminToken) {
     show("examStatus", "سجّل الدخول كمسؤول أولًا.");
     return;
   }
 
-  const questions = [...document.querySelectorAll(".question")].map(box => ({
-    question: box.querySelector(".qtext").value.trim(),
-    answer: box.querySelector(".atext").value.trim(),
-    points: Number(box.querySelector(".points").value)
-  }));
+  const title = document.getElementById("title").value.trim();
+  const grade = document.getElementById("grade").value;
+  const durationMinutes = Number(document.getElementById("duration").value);
 
-  show("examStatus", "جارٍ حفظ الامتحان...");
+  if (!title) {
+    show("examStatus", "اكتب عنوان الامتحان.");
+    return;
+  }
+
+  if (!Number.isInteger(durationMinutes) ||
+      durationMinutes < 1 || durationMinutes > 300) {
+    show("examStatus", "مدة الامتحان يجب أن تكون بين 1 و300 دقيقة.");
+    return;
+  }
+
+  let questions;
+  try {
+    questions = collectQuestions();
+  } catch (error) {
+    show("examStatus", error.message);
+    return;
+  }
+
+  setBusy(true);
+  createdExamId = "";
   document.getElementById("publishArea").classList.add("hidden");
+  show("examStatus", "جارٍ حفظ الامتحان كمسودة...");
 
   try {
     const result = await apiPost({
       action: "createExam",
-      adminToken,
-      title: document.getElementById("title").value.trim(),
-      grade: document.getElementById("grade").value,
-      durationMinutes: Number(document.getElementById("duration").value),
-      questions
+      adminToken: adminToken,
+      title: title,
+      grade: grade,
+      durationMinutes: durationMinutes,
+      questions: questions
     });
 
-    if (!result.success) throw new Error(result.message || "تعذّر إنشاء الامتحان.");
+    if (!result.success) {
+      throw new Error(result.message || "تعذّر إنشاء الامتحان.");
+    }
+
     createdExamId = result.examId;
-    show("examStatus", result.message);
-    show("examIdText", "Exam ID: " + createdExamId);
+    show("examStatus", result.message || "تم حفظ الامتحان كمسودة.");
+    show("examIdText", "رقم الامتحان: " + createdExamId);
+
     document.getElementById("publishArea").classList.remove("hidden");
+
   } catch (error) {
-    show("examStatus", "خطأ: " + error.message);
+    show("examStatus",
+      "تعذّر حفظ الامتحان:\n" + error.message);
+  } finally {
+    setBusy(false);
   }
 }
 
 async function publishExam() {
-  if (!adminToken || !createdExamId) return;
-  if (!confirm("هل أنت متأكد من نشر الامتحان وإتاحته لطلاب الصف المحدد؟")) return;
+  if (busy) return;
 
+  if (!adminToken || !createdExamId) {
+    show("examStatus", "احفظ الامتحان كمسودة أولًا.");
+    return;
+  }
+
+  if (!confirm("هل تريد نشر الامتحان للطلاب في الصف المحدد؟")) return;
+
+  setBusy(true);
   show("examStatus", "جارٍ نشر الامتحان...");
+
   try {
     const result = await apiPost({
       action: "publishExam",
-      adminToken,
+      adminToken: adminToken,
       examId: createdExamId
     });
-    if (!result.success) throw new Error(result.message || "تعذّر النشر.");
-    show("examStatus", result.message);
+
+    if (!result.success) {
+      throw new Error(result.message || "تعذّر نشر الامتحان.");
+    }
+
+    show("examStatus", result.message || "تم نشر الامتحان.");
     document.getElementById("publishArea").classList.add("hidden");
+
   } catch (error) {
-    show("examStatus", "خطأ: " + error.message);
+    show("examStatus",
+      "تعذّر نشر الامتحان:\n" + error.message);
+  } finally {
+    setBusy(false);
   }
 }
 
+/* استعادة واجهة الجلسة فقط؛ صلاحية الرمز يتحقق منها الخادم. */
 adminToken = sessionStorage.getItem("quizAdminToken") || "";
+
 if (adminToken) {
   document.getElementById("builder").classList.remove("hidden");
-  show("loginStatus", "توجد جلسة إدارة محفوظة مؤقتًا. إذا انتهت صلاحيتها، سجّل الدخول مجددًا.");
-  addQuestion();
-} else {
-  addQuestion();
+  show("loginStatus",
+    "تم استعادة رمز الجلسة المحفوظ مؤقتًا. إذا انتهت صلاحيته، سجّل الدخول مجددًا.");
 }
+
+addQuestion();
 </script>
 </body>
 </html>
