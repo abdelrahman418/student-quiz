@@ -394,7 +394,18 @@
         }
 
 
-        function startQuiz() {
+       function startQuiz() {
+    const studentID = localStorage.getItem("studentID");
+    const studentName = localStorage.getItem("studentName");
+    const studentGrade = localStorage.getItem("studentGrade");
+
+    if (!studentID || !studentName || !studentGrade) {
+        alert("Please login first.");
+        return;
+    }
+
+    window.location.href = "student-exams.html";
+} {
 
             if (!currentStudent) {
                 return;
